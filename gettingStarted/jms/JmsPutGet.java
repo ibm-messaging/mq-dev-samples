@@ -48,7 +48,7 @@ import com.ibm.msg.client.wmq.WMQConstants;
  * JNDI in use: No
  *
  */
-public class JmsPointToPointComplete {
+public class JmsPutGet {
 
 	// System exit status value (assume unset value to be 1)
 	private static int status = 1;
@@ -58,7 +58,7 @@ public class JmsPointToPointComplete {
 	private static final int PORT = 1414; // Listener port for your queue manager
 	private static final String CHANNEL = "DEV.APP.SVRCONN"; // Channel name
 	private static final String QMGR = "QM1"; // Queue manager name
-	private static final String APP_USER = "_APP_USER_"; // User name that application uses to connect to MQ
+	private static final String APP_USER = "app"; // User name that application uses to connect to MQ
 	private static final String APP_PASSWORD = "_APP_PASSWORD_"; // Password that the application uses to connect to MQ
 	private static final String QUEUE_NAME = "DEV.QUEUE.1"; // Queue that the application uses to put and get messages to and from
 
