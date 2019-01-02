@@ -14,12 +14,14 @@
 * limitations under the License.
 */
 
+// This application shows an example of using a listener to receive messages from a queue.
+
 package com.ibm.mq.samples.jms;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
+ 
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -32,7 +34,7 @@ import com.ibm.msg.client.jms.JmsConnectionFactory;
 import com.ibm.msg.client.jms.JmsFactoryFactory;
 import com.ibm.msg.client.wmq.WMQConstants;
 
-public class MyFirstMessageListenerApplication { 
+public class DemoMessageListenerApplication { 
 
 	// Create variables for the connection to MQ
 	private static final String HOST = "localhost"; // Host name or IP address
@@ -47,7 +49,6 @@ public class MyFirstMessageListenerApplication {
 		// Declare JMS 2.0 objects
 		JMSContext context;
 		Destination destination; // The destination will be a queue, but could also be a topic 
-		JMSProducer producer;
 		JMSConsumer consumer;
 		
 		JmsConnectionFactory connectionFactory = createJMSConnectionFactory();
@@ -60,11 +61,10 @@ public class MyFirstMessageListenerApplication {
 		try {
 			context = connectionFactory.createContext(); // This is connection + session. The connection is started by default
 			destination = context.createQueue("queue:///" + QUEUE_NAME); // Set the producer and consumer destination to be the same... not true in general
-			producer = context.createProducer();
 			consumer = context.createConsumer(destination); // associate consumer with the queue we put messages onto
 
 			/************IMPORTANT PART******************************/
-			MessageListener ml = new MyMessageListener(); // Creates a listener object
+			MessageListener ml = new DemoMessageListener(); // Creates a listener object
 			consumer.setMessageListener(ml); // Associates listener object with the consumer
 			
 			// The message listener will now listen for messages in a separate thread (see MyMessageListener.java file)
@@ -74,11 +74,16 @@ public class MyFirstMessageListenerApplication {
 
 			// The other logic for your program can now be implemented. This app can run whilst the listener listens in the background
 			// For our application, the userInterface method runs a loop for the user to interact with the listener by sending and receiving messages
-			userInterface(context, connectionFactory, producer, destination);
+			userInterface(context, connectionFactory, destination);
 			
 		} catch (Exception e) {
-			System.out.println("!! Failure in application main method !!");
-			e.printStackTrace();
+            if (e instanceof JMSException) {
+                System.out.println("!! JMS exception thrown in application main method !!");
+                System.out.println(((JMSException) e).getLinkedException());
+            } else {
+                System.out.println("!! Failure in application main method !!");
+                e.printStackTrace();
+            }
 		}
 	}
 
@@ -88,9 +93,9 @@ public class MyFirstMessageListenerApplication {
         try {
             ff = JmsFactoryFactory.getInstance(WMQConstants.WMQ_PROVIDER);
             cf = ff.createConnectionFactory();
-        } catch (JMSException jmsex) {
+        } catch (JMSException jmse) {
             System.out.println("JMS Exception when trying to create connection factory!");
-			jmsex.printStackTrace();
+			System.out.println(jmse.getLinkedException());
             cf = null;
         }
         return cf;
@@ -107,16 +112,17 @@ public class MyFirstMessageListenerApplication {
             cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
             cf.setStringProperty(WMQConstants.USERID, APP_USER);
             cf.setStringProperty(WMQConstants.PASSWORD, APP_PASSWORD);
-        } catch (JMSException jmsex) {
+        } catch (JMSException jmse) {
 			System.out.println("JMS Exception when trying to set JMS properties!");
-			jmsex.printStackTrace();
+			System.out.println(jmse.getLinkedException());
         }
         return;
 	}
 	
-	public static void userInterface(JMSContext context, JmsConnectionFactory connectionFactory, JMSProducer producer, Destination destination) {
+	public static void userInterface(JMSContext context, JmsConnectionFactory connectionFactory, Destination destination) {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		while (true) {
+		Boolean exit = false;
+		while (!exit) {
 			String command;
 			try {
 				System.out.print("Ready : ");
@@ -133,13 +139,14 @@ public class MyFirstMessageListenerApplication {
 						System.out.println("--Message Listener stopped.");
 						break;
 					case "send":
-						sendATextMessage(connectionFactory, producer, destination);
+						sendATextMessage(connectionFactory, destination);
 						System.out.println("--Sent text message.");
 						break;
 					case "exit":
 						context.close(); // Also stops the context
 						System.out.println("bye...");
-						System.exit(0);
+						exit = true;
+						break;
 					default:
 						System.out.println("Help: valid commands are start/restart, stop, send and exit");
 				}
@@ -147,9 +154,10 @@ public class MyFirstMessageListenerApplication {
 				e.printStackTrace();
 			}
 		}
+		System.exit(0);
 	}
 
-	public static void sendATextMessage(JmsConnectionFactory connectionFactory, JMSProducer producer, Destination destination) {
+	public static void sendATextMessage(JmsConnectionFactory connectionFactory, Destination destination) {
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 			System.out.print("payload : "); // Asks for the message payload as input
@@ -157,7 +165,7 @@ public class MyFirstMessageListenerApplication {
 
 			// Need a separate context to create and send the messages because they are received asynchronously
 			JMSContext producerContext = connectionFactory.createContext();
-			producer = producerContext.createProducer();
+			JMSProducer producer = producerContext.createProducer();
 			Message m = producerContext.createTextMessage(payload);
 			producer.send(destination, m);
 			producerContext.close();

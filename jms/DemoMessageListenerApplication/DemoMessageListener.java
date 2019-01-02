@@ -14,6 +14,8 @@
 * limitations under the License.
 */
 
+// 
+ 
 package com.ibm.mq.samples.jms;
 
 import javax.jms.JMSException;
@@ -21,7 +23,7 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
-public class MyMessageListener implements MessageListener {
+public class DemoMessageListener implements MessageListener {
 
 	public void onMessage(Message message) {
 		System.out.println("## entry onMessage");
@@ -30,16 +32,15 @@ public class MyMessageListener implements MessageListener {
             TextMessage textMessage = (TextMessage) message; // Casts to TextMessage object
             try {
                 System.out.println("-- MyMessageListener received message with payload: " + textMessage.getText());
-            } catch (JMSException jmsex) {
+            } catch (JMSException jmse) {
 				System.out.println("JMS Exception in MyMessageListener class!");
-				jmsex.printStackTrace();
+				System.out.println(jmse.getLinkedException());
             }
         } else {
             System.out.println("-- Message received was not of type TextMessage.\n");
-        }
-	
+		}
+		
 		System.out.println("##exit onMessage"); // So we know when onMessage has finished execution
-		System.out.println("Ready : ");
 	}
 
 }
