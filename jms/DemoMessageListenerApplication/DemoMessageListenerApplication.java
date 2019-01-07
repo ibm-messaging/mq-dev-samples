@@ -77,48 +77,59 @@ public class DemoMessageListenerApplication {
 			userInterface(context, connectionFactory, destination);
 			
 		} catch (Exception e) {
-            if (e instanceof JMSException) {
-                System.out.println("!! JMS exception thrown in application main method !!");
-                System.out.println(((JMSException) e).getLinkedException());
-            } else {
-                System.out.println("!! Failure in application main method !!");
-                e.printStackTrace();
-            }
+			// if there is an associated linked exception, print it. Otherwise print the stack trace
+			if (e instanceof JMSException) { 
+				JMSException jmse = (JMSException) e;
+				if (jmse.getLinkedException() != null) { 
+					System.out.println("!! JMS exception thrown in application main method !!");
+					System.out.println(jmse.getLinkedException());
+				}
+				else {
+					jmse.printStackTrace();
+				}
+			} else {
+				System.out.println("!! Failure in application main method !!");
+				e.printStackTrace();
+			}
 		}
 	}
 
 	private static JmsConnectionFactory createJMSConnectionFactory() {
-        JmsFactoryFactory ff;
-        JmsConnectionFactory cf;
-        try {
-            ff = JmsFactoryFactory.getInstance(WMQConstants.WMQ_PROVIDER);
-            cf = ff.createConnectionFactory();
-        } catch (JMSException jmse) {
-            System.out.println("JMS Exception when trying to create connection factory!");
-			System.out.println(jmse.getLinkedException());
-            cf = null;
-        }
-        return cf;
-    }
+		JmsFactoryFactory ff;
+		JmsConnectionFactory cf;
+		try {
+			ff = JmsFactoryFactory.getInstance(WMQConstants.WMQ_PROVIDER);
+			cf = ff.createConnectionFactory();
+		} catch (JMSException jmse) {
+			System.out.println("JMS Exception when trying to create connection factory!");
+			if (jmse.getLinkedException() != null){ // if there is an associated linked exception, print it. Otherwise print the stack trace
+				System.out.println(((JMSException) jmse).getLinkedException());
+			} else {jmse.printStackTrace();}
+			cf = null;
+		}
+		return cf;
+	}
 
 	private static void setJMSProperties(JmsConnectionFactory cf) {
-        try {
-            cf.setStringProperty(WMQConstants.WMQ_HOST_NAME, HOST);
-            cf.setIntProperty(WMQConstants.WMQ_PORT, PORT);
-            cf.setStringProperty(WMQConstants.WMQ_CHANNEL, CHANNEL);
-            cf.setIntProperty(WMQConstants.WMQ_CONNECTION_MODE, WMQConstants.WMQ_CM_CLIENT);
-            cf.setStringProperty(WMQConstants.WMQ_QUEUE_MANAGER, QMGR);
-            cf.setStringProperty(WMQConstants.WMQ_APPLICATIONNAME, "JmsPutGet (JMS)");
-            cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
-            cf.setStringProperty(WMQConstants.USERID, APP_USER);
-            cf.setStringProperty(WMQConstants.PASSWORD, APP_PASSWORD);
-        } catch (JMSException jmse) {
+		try {
+			cf.setStringProperty(WMQConstants.WMQ_HOST_NAME, HOST);
+			cf.setIntProperty(WMQConstants.WMQ_PORT, PORT);
+			cf.setStringProperty(WMQConstants.WMQ_CHANNEL, CHANNEL);
+			cf.setIntProperty(WMQConstants.WMQ_CONNECTION_MODE, WMQConstants.WMQ_CM_CLIENT);
+			cf.setStringProperty(WMQConstants.WMQ_QUEUE_MANAGER, QMGR);
+			cf.setStringProperty(WMQConstants.WMQ_APPLICATIONNAME, "JmsPutGet (JMS)");
+			cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
+			cf.setStringProperty(WMQConstants.USERID, APP_USER);
+			cf.setStringProperty(WMQConstants.PASSWORD, APP_PASSWORD);
+		} catch (JMSException jmse) {
 			System.out.println("JMS Exception when trying to set JMS properties!");
-			System.out.println(jmse.getLinkedException());
-        }
-        return;
+			if (jmse.getLinkedException() != null){ // if there is an associated linked exception, print it. Otherwise print the stack trace
+				System.out.println(((JMSException) jmse).getLinkedException());
+			} else {jmse.printStackTrace();}
+		}
+		return;
 	}
-	
+
 	public static void userInterface(JMSContext context, JmsConnectionFactory connectionFactory, Destination destination) {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		Boolean exit = false;
@@ -171,7 +182,18 @@ public class DemoMessageListenerApplication {
 			producerContext.close();
 		} catch (Exception e) {
 			System.out.println("Exception when trying to send a text message!");
-			e.printStackTrace();}
+			// if there is an associated linked exception, print it. Otherwise print the stack trace
+			if (e instanceof JMSException) { 
+				JMSException jmse = (JMSException) e;
+				if (jmse.getLinkedException() != null) { 
+					System.out.println(jmse.getLinkedException());
+				}
+				else {
+					jmse.printStackTrace();
+				}
+			} else {
+				e.printStackTrace();
+			}
+		}
 	}
-
 }
