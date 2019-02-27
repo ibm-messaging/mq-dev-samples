@@ -136,18 +136,25 @@ else
     exit $returnCode
 fi
 
-crtmqm QM1 
+# Create and start a queue manager
+crtmqm QM1
+returnCode=$?
+if [ $returnCode -eq 0 ]
+then
+    echo "Successfully created a queue manager" 
+else
+    echo "Problem when creating a queue manager. See return code: " $returnCode
+    exit $returnCode
+fi
 strmqm QM1
 returnCode=$?
 if [ $returnCode -eq 0 ]
 then
-    echo "Successfully created and started a queue manager" 
+    echo "Successfully started a queue manager" 
 else
-    echo "Problem when creating and starting a queue manager. See return code: " $returnCode
+    echo "Problem when starting a queue manager. See return code: " $returnCode
     exit $returnCode
 fi
-
-
 
 # Download and run developer config file to create MQ objects
 cd ~/Downloads
@@ -167,7 +174,7 @@ returnCode=$?
 if [ $returnCode -eq 20 ]
 then
     echo "error code $?"
-    echo "Error running developer configuration script!"
+    echo "Error running MQSC script!"
     exit $returnCode
 else
     echo "Developer configuration set up"
@@ -175,13 +182,25 @@ fi
 
 # Set up authentication for members of the "mqclient" group
 setmqaut -m QM1 -t qmgr -g mqclient +connect +inq
+returnCode=$?
+if [ $returnCode -ne 0 ]
+then
+    echo "Authorisation failed. See return code: " $returnCode
+    exit $returnCode
+fi
 setmqaut -m QM1 -n DEV.** -t queue -g mqclient +put +get +browse +inq
+returnCode=$?
+if [ $returnCode -eq 0 ]
+then
+    echo "Authorisation succeeded."
+else
+    echo "Authorisation failed. See return code: " $returnCode
+    exit $returnCode
+fi
 echo 
 echo "Now everything is set up with the developer configuration."
-echo "For details on environment variables that must be created and" 
-echo "a simple put/get test, visit TUTORIAL_PAGE_URL"
-echo "ASCII lighthouse may go here"
-echo "Thank you for visiting LearnMQ!"
+echo "For details on environment variables that must be created and a simple put/get test, visit" 
+echo "https://developer.ibm.com/messaging/learn-mq/mq-tutorials/mq-connect-to-queue-manager/"
 echo
 
 eof
