@@ -33,7 +33,7 @@ fi
 
 # Download MQ Advanced from public repo
 cd ~/Downloads
-#wget -c https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/mqadv_dev911_ubuntu_x86-64.tar.gz
+wget -c https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/mqadv_dev911_ubuntu_x86-64.tar.gz
 returnCode=$?
 if [ $returnCode -eq 0 ]
 then 
