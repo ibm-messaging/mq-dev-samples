@@ -33,7 +33,7 @@ fi
 
 # Download MQ Advanced from public repo
 cd ~/Downloads
-wget -c https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/mqadv_dev911_ubuntu_x86-64.tar.gz
+wget -c https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/mqadv_dev913_ubuntu_x86-64.tar.gz
 returnCode=$?
 if [ $returnCode -eq 0 ]
 then 
@@ -45,10 +45,10 @@ else
 fi
 
 # Unzip and extract .tar.gz file
-gunzip mqadv_dev911_ubuntu_x86-64.tar.gz
+gunzip mqadv_dev913_ubuntu_x86-64.tar.gz
 echo ".gz extract complete"
 echo
-tar -xf ./mqadv_dev911_ubuntu_x86-64.tar
+tar -xf ./mqadv_dev913_ubuntu_x86-64.tar
 returnCode=$?
 if [ $returnCode -eq 0 ]
 then 
