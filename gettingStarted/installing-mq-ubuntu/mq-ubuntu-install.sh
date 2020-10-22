@@ -27,13 +27,13 @@ then
     echo
 else
     echo "Group mqclient does not exist!" 
-    echo "Please visit TUTORIAL_PAGE_URL to learn how to create the required group."
+    echo "Please visit https://developer.ibm.com/tutorials/mq-connect-app-queue-manager-ubuntu/ to learn how to create the required group."
     exit $returnCode
 fi
 
 # Download MQ Advanced from public repo
-cd ~/Downloads
-wget -c https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/mqadv_dev911_ubuntu_x86-64.tar.gz
+cd ~
+wget -c https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/mqadv_dev920_ubuntu_x86-64.tar.gz
 returnCode=$?
 if [ $returnCode -eq 0 ]
 then 
@@ -45,10 +45,10 @@ else
 fi
 
 # Unzip and extract .tar.gz file
-gunzip mqadv_dev911_ubuntu_x86-64.tar.gz
+gunzip mqadv_dev920_ubuntu_x86-64.tar.gz
 echo ".gz extract complete"
 echo
-tar -xf ./mqadv_dev911_ubuntu_x86-64.tar
+tar -xf ./mqadv_dev920_ubuntu_x86-64.tar
 returnCode=$?
 if [ $returnCode -eq 0 ]
 then 
@@ -74,7 +74,8 @@ fi
 
 # Create a .list file to let the system add the new packages to the apt cache
 cd /etc/apt/sources.list.d
-echo "deb [trusted=yes] file:/home/$SUDO_USER/Downloads/MQServer ./" > mq-install.list
+MQ_PACKAGES_LOCATION=~/MQServer
+echo "deb [trusted=yes] file:$MQ_PACKAGES_LOCATION ./" > mq-install.list
 apt-get update
 returnCode=$?
 if [ $returnCode -eq 0 ]
@@ -87,7 +88,7 @@ else
 fi
 
 echo "Beginning MQ install"
-apt-get install "ibmmq-*"
+apt-get install -y "ibmmq-*"
 returnCode=$?
 if [ $returnCode -eq 0 ]
 then
@@ -200,7 +201,7 @@ fi
 echo 
 echo "Now everything is set up with the developer configuration."
 echo "For details on environment variables that must be created and a simple put/get test, visit" 
-echo "https://developer.ibm.com/messaging/learn-mq/mq-tutorials/mq-connect-to-queue-manager/"
+echo "https://developer.ibm.com/tutorials/mq-connect-app-queue-manager-ubuntu/"
 echo
 
 eof

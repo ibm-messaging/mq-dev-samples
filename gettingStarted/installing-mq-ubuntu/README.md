@@ -2,9 +2,9 @@
 
 This bash script is used to install an instance of MQ Advanced for Developers locally onto an Ubuntu machine.
 
-It was discussed in [this tutorial](http://developer.ibm.com/messaging/learn-mq/mq-tutorials/mq-connect-to-queue-manager/#ubuntu).
+It was discussed in [this tutorial](https://developer.ibm.com/tutorials/mq-connect-app-queue-manager-ubuntu/).
 
-## What does the script do?
+## What the script does
 
 The install script:
 
@@ -30,7 +30,7 @@ Download the script (e.g. with a wget of the raw file URL).
 Once this is done, run the command
 
 ```bash
-chmod +x mq-ubuntu-install.sh
+chmod 755 mq-ubuntu-install.sh
 ```
 
 The script can now be executed with
@@ -41,7 +41,7 @@ sudo ./mq-ubuntu-install.sh
 
 ## Next steps
 
-Go back to the Ubuntu tutorial ([which can be found here](http://developer.ibm.com/messaging/learn-mq/mq-tutorials/mq-connect-to-queue-manager/#ubuntu)). Follow the steps in Section 6 to put and get messages to and from a queue.
+Go back to the Ubuntu tutorial ([which can be found here](https://developer.ibm.com/tutorials/mq-connect-app-queue-manager-ubuntu/)). Follow the steps in Section 6 to put and get messages to and from a queue.
 
 ## License
 
