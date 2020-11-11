@@ -120,12 +120,12 @@ else
 fi
 
 # The group "mqm" is created during the installation. Add the current user to it
-adduser $SUDO_USER mqm
-echo "Successfully added $SUDO_USER to group mqm"
+adduser ${SUDO_USER:-${USER}} mqm
+echo "Successfully added ${SUDO_USER:-${USER}} to group mqm"
 
 
 
-exec sudo -u $SUDO_USER /bin/bash - << eof
+exec sudo -u ${SUDO_USER:-${USER}} /bin/bash - << eof
 cd /opt/mqm/bin
 . setmqenv -s
 returnCode=$?
