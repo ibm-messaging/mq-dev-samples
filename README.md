@@ -17,7 +17,9 @@ For reference tese instructions were built from [this tutorial](https://develope
 ### Getting setup
 
 - Clone this repo
-- Change directory to `mq-dev-samples/gettingStarted/jms` (Linix) or `mq-dev-samples\gettingStarted\jms` (Windows)
+- Change directory to the working directory
+  - Linux `cd mq-dev-samples/gettingStarted/jms`
+  - Windows `cd mq-dev-samples\gettingStarted\jms`
 - Download the `javax.jms-api-2.0.1.jar` jar
 
 ```
@@ -69,8 +71,8 @@ private static final String QUEUE_NAME = "DEV.QUEUE.1"; // Queue that the applic
 
 - Change directory to `mq-dev-samples/gettingStarted/jms` (Linix) or `mq-dev-samples\gettingStarted\jms` (Windows)
 - compile your modified `JmsPut.java` application
-  - For Liniux `javac -cp ./com.ibm.mq.allclient-9.1.4.0.jar:./javax.jms-api-2.0.1.jar com/ibm/mq/samples/jms/JmsPut.java`
-  - For Windows `javac -cp .\com.ibm.mq.allclient-9.1.4.0.jar;.\javax.jms-api-2.0.1.jar com\ibm\mq\samples\jms\JmsPut.java`
+  - For Liniux `javac -cp ./com.ibm.mq.allclient-9.2.2.0.jar:./javax.jms-api-2.0.1.jar com/ibm/mq/samples/jms/JmsPut.java`
+  - For Windows `javac -cp .\com.ibm.mq.allclient-9.2.2.0.jar;.\javax.jms-api-2.0.1.jar com\ibm\mq\samples\jms\JmsPut.java`
 - You should now see a `JmsPut.class` file alongside your `JmsPut.java` source file
 
 ### Run your `jmsPut` application
