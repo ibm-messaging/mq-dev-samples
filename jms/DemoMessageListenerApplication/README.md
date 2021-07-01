@@ -1,6 +1,6 @@
 # Message Listener Application
 
-This is an example of a basic message listener application. There is a command line interface for the user to start/stop the listener and send messages. 
+This is an example of a basic message listener application. There is a command line interface for the user to start/stop the listener and send messages.
 
 It was discussed in [this tutorial](https://developer.ibm.com/messaging/learn-mq/mq-tutorials/slow-lost-messages-high-cpu-improve-your-mq-app/).
 
