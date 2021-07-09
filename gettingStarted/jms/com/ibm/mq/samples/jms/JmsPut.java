@@ -106,6 +106,8 @@ public class JmsPut {
 			producer.send(destination, message);
 			System.out.println("Sent message:\n" + message);
 
+                        context.close();
+
 			recordSuccess();
 		} catch (JMSException jmsex) {
 			recordFailure(jmsex);

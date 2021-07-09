@@ -111,6 +111,8 @@ public class JmsPutGet {
 
 			System.out.println("\nReceived message:\n" + receivedMessage);
 
+                        context.close();
+
 			recordSuccess();
 		} catch (JMSException jmsex) {
 			recordFailure(jmsex);
