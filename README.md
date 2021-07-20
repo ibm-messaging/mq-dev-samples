@@ -12,7 +12,7 @@ Feel free to use code from the mq-dev-patterns repo to create your own messaging
 
 ## Using the `gettingStarted/jms` samples with TLS (IBM DDC MQ Badge Lab)
 
-For reference tese instructions were built from [this tutorial](https://developer.ibm.com/components/ibm-mq/tutorials/mq-develop-mq-jms/). Check it out for additional hints and tips.
+For reference these instructions were built from [this tutorial](https://developer.ibm.com/components/ibm-mq/tutorials/mq-develop-mq-jms/). Check it out for additional hints and tips.
 
 ### Getting setup
 
@@ -42,14 +42,14 @@ curl -o com.ibm.mq.allclient-9.2.2.0.jar https://repo1.maven.org/maven2/com/ibm/
 keytool -keystore clientTruststore.p12 -storetype pkcs12 -importcert -file qmgrcert.pem -alias server-certificate
 ```
 
-- Enter and then re-enter a password for your new trustrore file `clientTruststore.p12`. It's important to remember this password as we'll use it when we run the smaple later.
+- Enter and then re-enter a password for your new truststore file `clientTruststore.p12`. It's important to remember this password as we'll use it when we run the sample later.
 - Type `yes` to trust this certificate
 
 ### Start coding to put a message jms
 
-Open the `com/ibm/mq/samples/jms/JmsPut.java` file (Linux) or `com\ibm\mq\samples\jms\JmsPut.java` (Windows) in your favorate editor
+Open the `com/ibm/mq/samples/jms/JmsPut.java` file (Linux) or `com\ibm\mq\samples\jms\JmsPut.java` (Windows) in your favorite editor
 
-uncoment the following line
+Uncomment the following line
 
 ```java 
 cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, "*TLS12");
@@ -69,9 +69,9 @@ private static final String QUEUE_NAME = "DEV.QUEUE.1"; // Queue that the applic
 
 ### Compile your jms code
 
-- Change directory to `mq-dev-samples/gettingStarted/jms` (Linix) or `mq-dev-samples\gettingStarted\jms` (Windows)
-- compile your modified `JmsPut.java` application
-  - For Liniux `javac -cp ./com.ibm.mq.allclient-9.2.2.0.jar:./javax.jms-api-2.0.1.jar com/ibm/mq/samples/jms/JmsPut.java`
+- Change directory to `mq-dev-samples/gettingStarted/jms` (Linux) or `mq-dev-samples\gettingStarted\jms` (Windows)
+- Compile your modified `JmsPut.java` application
+  - For Linux `javac -cp ./com.ibm.mq.allclient-9.2.2.0.jar:./javax.jms-api-2.0.1.jar com/ibm/mq/samples/jms/JmsPut.java`
   - For Windows `javac -cp .\com.ibm.mq.allclient-9.2.2.0.jar;.\javax.jms-api-2.0.1.jar com\ibm\mq\samples\jms\JmsPut.java`
 - You should now see a `JmsPut.class` file alongside your `JmsPut.java` source file
 
