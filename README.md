@@ -45,7 +45,13 @@ keytool -keystore clientTruststore.p12 -storetype pkcs12 -importcert -file qmgrc
 - Enter and then re-enter a password for your new truststore file `clientTruststore.p12`. It's important to remember this password as we'll use it when we run the sample later.
 - Type `yes` to trust this certificate
 
-### Start coding to put a message jms
+### Generate application credentials and an API key
+
+Navigate to the "Application Credentials" tab of your cloud MQ service instance.
+
+Click `add`, then create a user called "app". Click `Add and generate API key`, which will bring up your API token. Copy this and save it somewhere as you'll need it in the application you run to authenticate yourself to your MQ instance.
+
+### Start coding to put a message with jms
 
 Open the `com/ibm/mq/samples/jms/JmsPut.java` file (Linux) or `com\ibm\mq\samples\jms\JmsPut.java` (Windows) in your favorite editor
 
