@@ -2,11 +2,11 @@
 
 ### Note: these instructions support the demonstration of an IBM MQ queue manager in a docker container and illustrate various capabilities as part of a demo. This is not intended as a reference guide or as production ready sample. Please refer to the [IBM MQ Documentation](https://www.ibm.com/docs/en/ibm-mq/latest?topic=mq-in-containers-cloud-pak-integration) for more information on planning and deployment IBM MQ in a container.
 
-### TechCon 2021, IBM MQ in a container general demo notes
+## TechCon 2021, IBM MQ in a container general demo notes
 
 - Please follow this [tutorial](https://developer.ibm.com/tutorials/mq-connect-app-queue-manager-containers/) for full instructions on installing docker and running IBM MQ Developer Edition in a container.
 
-### Pull the image
+##Pull the image
 ```
 docker pull ibmcom/mq:latest
 ```
@@ -24,7 +24,7 @@ Now you have the MQ image, you're ready to run an IBM MQ queue manager as a cont
 ```
 In this example, the storage is named ```qm1data```
 
-### Run the queue manager server container
+## Run the queue manager server container
 
 Note: the ```docker run``` command includes a default value for the ```app``` user password, please modify this to something more suitable to your needs. 
 
@@ -81,9 +81,11 @@ The console uses a self-signed TLS certificate in its default configuration. To 
 
 Once in the console we can explore the default developer configuration.
 
-### Connecting an application
 
-#### Configuration
+
+## Connecting an application
+
+### Configuration
 
 The MQ dev patterns repo contains a standard set of samples spanning a range of languages and APIs. In this step we will clone the repo and put some messages with a Golang application. 
 
@@ -125,7 +127,7 @@ Then modify the entry to include the correct credentials for the queue manager `
 ```
 Save the ```env.json``` file.
 
-#### Running the Golang app
+### Running the Golang app
 
 Change to the Golang source directory
 
@@ -152,6 +154,8 @@ MQ Put: 2021/08/16 18:27:29 Application is Ending
 ### Checking the messages on the queue
 
 You can use the console to check the messages were delieverd to ```DEV.QUEUE.1```
+
+
 
 
 ## TLS Security (self singed)
