@@ -272,7 +272,7 @@ docker run --name mqtls --env LICENSE=accept --env MQ_QMGR_NAME=QM1 --volume [!!
 
 ### Update the env.json file
 
-Chane localhost to be the name that we gave to our container instance so that it can be found on the docker network
+Change localhost to be the name that we gave to our container instance so that it can be found on the docker network
 
 ```
 "HOST": "mqtls",
