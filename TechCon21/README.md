@@ -256,6 +256,8 @@ You can use the console to check the messages were delieverd to ```DEV.QUEUE.1``
 
 ## Running the Java sample application in a container
 
+Following section aims to illustrate the principle of containerizing an application and not best practices.
+
 ### Create the docker network
 
 To simplify the configuration enabling the application container to talk to the queue manager server we'll use a docker network
@@ -303,7 +305,7 @@ RUN javac -cp ./com.ibm.mq.allclient-9.2.3.0.jar:./javax.jms-api-2.0.1.jar:./jso
 CMD java -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStore=./clientkey.jks -Djavax.net.ssl.trustStorePassword=passw0rd -Dcom.ibm.mq.cfg.useIBMCipherMappings=false -cp ./com.ibm.mq.allclient-9.2.3.0.jar:./javax.jms-api-2.0.1.jar:./json-simple-1.1.1.jar:. com.ibm.mq.samples.jms.JmsPut
 ```
 
-### Build youe MQ JMS application sample docker image
+### Build your MQ JMS application sample docker image
 
 ```
 docker build . -t mq-app
