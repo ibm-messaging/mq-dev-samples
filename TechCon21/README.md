@@ -69,7 +69,7 @@ And we see the queue manager status
 QMNAME(QM1)                                               STATUS(Running)
 ```
 
-### connecting to the queue manager with the IBM MQ Console
+### Connecting to the queue manager with the IBM MQ Console
 
 The MQ container image includes the IBM MQ Console which we can connect to on port 9443. Open a web browser and naviaget to the console URL
 
@@ -81,5 +81,80 @@ The console uses a self-signed TLS certificate in its default configuration. To 
 
 Once in the console we can explore the default developer configuration.
 
-### connecting an application
+### Connecting an application
+
+#### Configuration
+
+The MQ dev patterns repo contains a standard set of samples spanning a range of languages and APIs. In this step we will clone the repo and put some messages with a Golang application. 
+
+First create / change to a suitable directory to work on the dev patterns repo clone and then clone the repo. 
+
+```
+git clone https://github.com/ibm-messaging/mq-dev-patterns.git
+```
+
+under the ```mq-dev-patterns``` top level directory, you'll see an ```env.json``` file and the ```Go``` directory that contians the Golang sample applications.
+
+Open the env.json file in a suitable editor e.g., ```atom env.json```
+
+In the first MQ_ENDPOINTS entry remove the following lines as we have not configured TLS security at this stage
+
+```
+"CIPHER": "TLS_RSA_WITH_AES_128_CBC_SHA256",
+"CIPHER_SUITE": "TLS_RSA_WITH_AES_128_CBC_SHA256",
+"KEY_REPOSITORY": "../keys/clientkey"
+````
+
+Then modify the entry to include the correct credentials for the queue manager ```QM1``` running in our container. The entry should look similar to:
+
+```
+{
+  "MQ_ENDPOINTS": [{
+    "HOST": "localhost",
+    "PORT": "1414",
+    "CHANNEL": "DEV.APP.SVRCONN",
+    "QMGR": "QM1",
+    "APP_USER": "app",
+    "APP_PASSWORD": "passw0rd",
+    "QUEUE_NAME": "DEV.QUEUE.1",
+    "MODEL_QUEUE_NAME": "DEV.APP.MODEL.QUEUE",
+    "DYNAMIC_QUEUE_PREFIX": "APP.REPLIES.*",
+    "TOPIC_NAME": "dev/"
+  }]
+}
+```
+Save the ```env.json``` file.
+
+#### Running the Golang app
+
+Change to the Golang source directory
+
+```
+cd Go/src
+```
+
+Run the ```basicput.go``` application
+
+```
+go run basicput.go
+```
+
+You should see successful completion of the Golang application
+
+```
+MQ Put: 2021/08/16 18:27:29 Writing Message to Queue
+MQ Put: 2021/08/16 18:27:29 Sending message {"greeting":"Hello from Go at ****-**-**T18:27:29+01:00","value":81}
+MQ Put: 2021/08/16 18:27:29 Put message to DEV.QUEUE.1
+MQ Put: 2021/08/16 18:27:29 MsgId:414d5120514d31202020202020202020fa9f1a6101290040
+MQ Put: 2021/08/16 18:27:29 Application is Ending
+```
+
+### Checking the messages on the queue
+
+You can use the console to check the messages were delieverd to ```DEV.QUEUE.1```
+
+
+## TLS Security
+
+
 
