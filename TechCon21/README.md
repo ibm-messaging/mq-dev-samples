@@ -154,7 +154,97 @@ MQ Put: 2021/08/16 18:27:29 Application is Ending
 You can use the console to check the messages were delieverd to ```DEV.QUEUE.1```
 
 
-## TLS Security
+## TLS Security (self singed)
+
+This [tutorial](https://developer.ibm.com/tutorials/mq-secure-msgs-tls/) contains full step by step instructions
+
+Make and change into a directory called ```keys``
+
+```
+mkdir keys
+cd keys
+```
+
+### Create a Server key and certificate for the queue manager
+
+```
+openssl req -newkey rsa:2048 -nodes -keyout key.key -x509 -days 365 -out key.crt
+```
+
+Optionally, you can check the key with the following command
+
+```
+openssl x509 -text -noout -in key.crt
+```
+
+### Create a client key store (Java) and add the server certificate
+
+In this part of the demo we will use a Java client to Put and Get messages to a queue using TLS. The first step is to create a keystore and add the server certificate.
+
+```
+keytool -keystore clientkey.jks -storetype jks -importcert -file key.crt -alias server-certificate
+```
 
 
+### Start a new queue manager container, this time passing a key and certificate for the server to use
 
+```
+docker run --name mqtls --env LICENSE=accept --env MQ_QMGR_NAME=QM1 --volume [!!path to directory with key and crt files!!]:/etc/mqm/pki/keys/mykey --publish 1414:1414 --publish 9443:9443 --detach --env MQ_APP_PASSWORD=passw0rd ibmcom/mq:latest
+```
+
+### Validate that the channel is secured with TLS
+
+```
+docker exec -ti mqtls /bin/bash
+```
+
+Once attached ot the container with a bash shell
+
+```
+runmqsc QM1
+```
+
+Now show the Channel config
+
+```
+DISPLAY CHANNEL('DEV.APP.SVRCONN')
+```
+
+And validate a cipher spec has been set under the ```SSLCIPH``` attribute. You should see something like ```SSLCIPH(ANY_TLS12)```. Exit the shell.
+
+```
+exit
+exit
+```
+
+### Prepare the JMS client config 
+
+Download the three prereq jars [as linked here](https://github.com/ibm-messaging/mq-dev-patterns/tree/master/JMS) and copy them to the ```mq-dev-patterns/JMS``` top level directory and then compile the put sample.
+
+```
+javac -cp ./com.ibm.mq.allclient-9.2.3.0.jar:./javax.jms-api-2.0.1.jar:./json-simple-1.1.1.jar:. com/ibm/mq/samples/jms/JmsPut.java
+```
+
+Add the following lines to the ```env.json``` file.
+
+```
+"CIPHER": "TLS_RSA_WITH_AES_128_CBC_SHA256",
+"CIPHER_SUITE": "TLS_RSA_WITH_AES_128_CBC_SHA256",
+"KEY_REPOSITORY": "../keys/clientkey"
+````
+
+### Run the Java client sample app
+
+```
+java -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStore=path-to-keys-directory/clientkey.jks -Djavax.net.ssl.trustStorePassword=passw0rd -Dcom.ibm.mq.cfg.useIBMCipherMappings=false -cp ./com.ibm.mq.allclient-9.2.3.0.jar:./javax.jms-api-2.0.1.jar:./json-simple-1.1.1.jar:. com.ibm.mq.samples.jms.JmsPut
+```
+
+The sample app should complete successfully with the message:
+
+```
+INFO: Sent all messages!
+```
+
+### Checking the messages on the queue
+
+You can use the console to check the messages were delieverd to ```DEV.QUEUE.1```
