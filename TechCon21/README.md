@@ -252,3 +252,75 @@ INFO: Sent all messages!
 ### Checking the messages on the queue
 
 You can use the console to check the messages were delieverd to ```DEV.QUEUE.1```
+
+
+## Running the Java sample application in a container
+
+### Create the docker network
+
+To simplify the configuration enabling the application container to talk to the queue manager server we'll use a docker network
+
+```
+docker network create techcon21
+```
+
+### Restart the docker container and connect to the new docker network
+
+```
+docker run --name mqtls --env LICENSE=accept --env MQ_QMGR_NAME=QM1 --volume [!!path to directory with key and crt files!!]:/etc/mqm/pki/keys/mykey --publish 1414:1414 --publish 9443:9443 --detach --env MQ_APP_PASSWORD=passw0rd --network techcon21 ibmcom/mq:latest
+```
+
+### Update the env.json file
+
+Chane localhost to be the name that we gave to our container instance so that it can be found on the docker network
+
+```
+"HOST": "mqtls",
+```
+
+### Create the application Dockerfile under ```mq-dev-patterns```
+
+```
+atom Dockerfile
+```
+
+Add the following to your Dockerfile
+
+
+```
+FROM adoptopenjdk/openjdk8
+
+RUN mkdir /mq-java-sample
+RUN cd /mq-java-sample
+
+COPY mq-dev-patterns/JMS JMS
+COPY mq-dev-patterns/env.json .
+COPY keys/clientkey.jks ./JMS
+
+RUN cd JMS
+WORKDIR JMS
+RUN javac -cp ./com.ibm.mq.allclient-9.2.3.0.jar:./javax.jms-api-2.0.1.jar:./json-simple-1.1.1.jar:. com/ibm/mq/samples/jms/JmsPut.java
+CMD java -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStore=./clientkey.jks -Djavax.net.ssl.trustStorePassword=passw0rd -Dcom.ibm.mq.cfg.useIBMCipherMappings=false -cp ./com.ibm.mq.allclient-9.2.3.0.jar:./javax.jms-api-2.0.1.jar:./json-simple-1.1.1.jar:. com.ibm.mq.samples.jms.JmsPut
+```
+
+### Build youe MQ JMS application sample docker image
+
+```
+docker build . -t mq-app
+```
+
+### Run your MQ JMS sample app 
+
+```
+docker run --network techcon21 mq-app
+```
+
+The sample app should complete successfully with the message:
+
+```
+INFO: Sent all messages!
+```
+
+### Checking the messages on the queue
+
+You can use the console to check the messages were delieverd to ```DEV.QUEUE.1```
