@@ -6,7 +6,7 @@
 
 - Please follow this [tutorial](https://developer.ibm.com/tutorials/mq-connect-app-queue-manager-containers/) for full instructions on installing docker and running IBM MQ Developer Edition in a container.
 
-##Pull the image
+## Pull the image
 ```
 docker pull ibmcom/mq:latest
 ```
