@@ -1,10 +1,10 @@
 # IBM MQ TechCon21 Demo Instructions
 
-### Note: these instructions support the demonstration of an IBM MQ queue manager in a docker container and illustrate various capabilities as part of a demo. This is not intended as a reference guide or as production ready sample. Please refer to the [IBM MQ Documentation](https://www.ibm.com/docs/en/ibm-mq/latest?topic=mq-in-containers-cloud-pak-integration) for more information on planning and deployment IBM MQ in a container.
+### Note: these instructions support the demonstration of an IBM MQ queue manager in a docker container and illustrate various capabilities as part of a demo. This is not intended as a reference guide or as production ready sample code. Please refer to the [IBM MQ Documentation](https://www.ibm.com/docs/en/ibm-mq/latest?topic=mq-in-containers-cloud-pak-integration) for more information on planning for and deploying IBM MQ in a container.
 
 ## TechCon 2021: IBM MQ in a container general demo notes
 
-- Please follow this [tutorial](https://developer.ibm.com/tutorials/mq-connect-app-queue-manager-containers/) for full instructions on installing docker and running IBM MQ Developer Edition in a container.
+- Please follow [this tutorial](https://developer.ibm.com/tutorials/mq-connect-app-queue-manager-containers/) for full instructions on installing docker and running IBM MQ Developer Edition in a container.
 
 ## Pull the image
 ```
@@ -17,12 +17,12 @@ docker images
 ```
 and look for ```ibmcom/mq latest``` in the listing
 
-Now you have the MQ image, you're ready to run an IBM MQ queue manager as a container. However, by default container storage will be 'in memory' so messages will not persist on queues between container restarts. One approach is to crate a docker volume to attach persistant storage to the container.
+Now you have the MQ image, you're ready to run an IBM MQ queue manager as a container. However, by default container storage will be 'in memory' so messages will not persist on queues between container restarts. One approach is to crate a docker volume to attach persistent storage to the container.
 
 ```
  docker volume create qm1data
 ```
-In this example, the storage is named ```qm1data```
+In this example, the storage is named ```qm1data```.
 
 ## Run the queue manager server container
 
@@ -32,19 +32,19 @@ Note: the ```docker run``` command includes a default value for the ```app``` us
  docker run --env LICENSE=accept --env MQ_QMGR_NAME=QM1 --volume qm1data:/mnt/mqm --publish 1414:1414 --publish 9443:9443 --detach --env MQ_APP_PASSWORD=passw0rd --name QM1 ibmcom/mq:latest
 ```
 
-The ```qm1data``` volume is mounted into the container under ```/mnt/mqm``` to provide a persistant store
+The ```qm1data``` volume is mounted into the container under ```/mnt/mqm``` to provide a persistent store
 
-In this example, the queue manager is named ```QM1``` and two ports have been bound to the host so that messaging clients can connect to the queue manager and exchange messages on ```1414```. We can also access IBM MQ Web Console via a browser on port ```9443```. We have also assigned the container instance a name of ```QM1``` for convenience
+In this example, the queue manager is named ```QM1``` and two ports have been bound to the host so that messaging clients can connect to the queue manager and exchange messages on port ```1414```. We can also access the IBM MQ Web Console via a browser on port ```9443```. We have assigned the container instance a name of ```QM1``` for convenience.
 
 ### Check the queue manager is running
 
-Check the docker process is running
+Check the docker process is running with
 
 ```
 docker ps
 ```
 
-The command should return a container id for a the runnign queue manager
+The command should return a container id for the running queue manager container:
 
 ```
 CONTAINER ID.         IMAGE              COMMAND            CREATED          STATUS         PORTS           NAMES                                                                                          NAMES
@@ -71,15 +71,15 @@ QMNAME(QM1)                                               STATUS(Running)
 
 ### Connecting to the queue manager with the IBM MQ Console
 
-The MQ container image includes the IBM MQ Console which we can connect to on port 9443. Open a web browser and naviaget to the console URL
+The MQ container image includes the IBM MQ Console which we can connect to on port 9443. Open a web browser and naviagte to the console URL
 
 ```
 https://localhost:9443/ibmmq/console
 ```
 
-The console uses a self-signed TLS certificate in its default configuration. To proceed we need to accept the certificate and the console login page will load. Sign into the console with the user id ```admin``` and the password ```passw0rd``` (unless a different password chosen in the ```docker run``` command issued earlier). 
+The console uses a self-signed TLS certificate in its default configuration. To proceed we need to accept the certificate and the console login page will load. Sign into the console with the user id ```admin``` and the password ```passw0rd``` (unless you set a different password in the ```docker run``` command issued earlier). 
 
-Once in the console we can explore the default developer configuration.
+Once inside the console, we can explore the default developer configuration.
 
 
 
@@ -89,7 +89,7 @@ Once in the console we can explore the default developer configuration.
 
 The MQ dev patterns repo contains a standard set of samples spanning a range of languages and APIs. In this step we will clone the repo and put some messages with a Golang application. 
 
-First create / change to a suitable directory to work on the dev patterns repo clone and then clone the repo. 
+First create / change to a suitable directory to work on the dev patterns repo clone, then clone the repo. 
 
 ```
 git clone https://github.com/ibm-messaging/mq-dev-patterns.git
@@ -158,9 +158,9 @@ You can use the console to check the messages were delieverd to ```DEV.QUEUE.1``
 
 
 
-## TLS Security (self singed)
+## TLS Security (self signed)
 
-This [tutorial](https://developer.ibm.com/tutorials/mq-secure-msgs-tls/) contains full step by step instructions
+[This tutorial](https://developer.ibm.com/tutorials/mq-secure-msgs-tls/) contains full step by step instructions.
 
 Make and change into a directory called ```keys```
 
@@ -192,6 +192,8 @@ keytool -keystore clientkey.jks -storetype jks -importcert -file key.crt -alias 
 
 ### Start a new queue manager container, this time passing a key and certificate for the server to use
 
+Note you will need to stop your existing container with ```docker stop``` as the ports have been allocated to it, or change the port you use locally (e.g. from 1414 to 1415) to avoid the conflict.
+
 ```
 docker run --name mqtls --env LICENSE=accept --env MQ_QMGR_NAME=QM1 --volume [!!path to directory with key and crt files!!]:/etc/mqm/pki/keys/mykey --publish 1414:1414 --publish 9443:9443 --detach --env MQ_APP_PASSWORD=passw0rd ibmcom/mq:latest
 ```
@@ -202,7 +204,7 @@ docker run --name mqtls --env LICENSE=accept --env MQ_QMGR_NAME=QM1 --volume [!!
 docker exec -ti mqtls /bin/bash
 ```
 
-Once attached ot the container with a bash shell
+Once attached to the container with a bash shell
 
 ```
 runmqsc QM1
@@ -214,7 +216,7 @@ Now show the Channel config
 DISPLAY CHANNEL('DEV.APP.SVRCONN')
 ```
 
-And validate a cipher spec has been set under the ```SSLCIPH``` attribute. You should see something like ```SSLCIPH(ANY_TLS12)```. Exit the shell.
+And validate that a cipher spec has been set under the ```SSLCIPH``` attribute. You should see something like ```SSLCIPH(ANY_TLS12)```. Exit the shell.
 
 ```
 exit
@@ -251,16 +253,16 @@ INFO: Sent all messages!
 
 ### Checking the messages on the queue
 
-You can use the console to check the messages were delieverd to ```DEV.QUEUE.1```
+You can use the console to check the messages were delieverd to ```DEV.QUEUE.1```.
 
 
 ## Running the Java sample application in a container
 
-Following section aims to illustrate the principle of containerizing an application and not best practices.
+The following section aims to illustrate the principle of containerizing an application, and not the best practices for doing so.
 
 ### Create the docker network
 
-To simplify the configuration enabling the application container to talk to the queue manager server we'll use a docker network
+To simplify the configuration enabling the application container to talk to the queue manager server, we'll use a docker network
 
 ```
 docker network create techcon21
@@ -325,4 +327,4 @@ INFO: Sent all messages!
 
 ### Checking the messages on the queue
 
-You can use the console to check the messages were delieverd to ```DEV.QUEUE.1```
+You can use the console to check the messages were delieverd to ```DEV.QUEUE.1```.
