@@ -282,7 +282,7 @@ Change localhost to be the name that we gave to our container instance so that i
 "HOST": "mqtls",
 ```
 
-### Create the application Dockerfile under ```mq-dev-patterns```
+### Create the application Dockerfile in the diectory that contains ```mq-dev-patterns```
 
 ```
 atom Dockerfile
