@@ -162,7 +162,7 @@ You can use the console to check the messages were delieverd to ```DEV.QUEUE.1``
 
 [This tutorial](https://developer.ibm.com/tutorials/mq-secure-msgs-tls/) contains full step by step instructions.
 
-Make and change into a directory called ```keys```
+Change into the directory that contains the ```mq-dev-patterns``` directory, make and change into a directory called ```keys```
 
 ```
 mkdir keys
