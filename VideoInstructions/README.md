@@ -1,6 +1,10 @@
 # Instructions for following the MQ Samples video
 
-[Video available at this link.](video_link_will_go_here)
+This readme refers to a planned video that shows how to use code from https://ibm.biz/mq-dev-patterns.
+
+The video doesn't currently exist, so there is no link to it here yet!
+
+[no_video_yet](video_link_will_go_here)
 
 We're going to use a Java sample to put a message onto a queue, then a node.js sample to get the message from the queue. What follows is instructions for getting the samples that we show in the video to run. Once you've done the setup steps, you can run any of the samples in that language with a simple run command and adapt them to work in your software solution!
 
