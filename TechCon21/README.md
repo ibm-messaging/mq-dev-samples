@@ -6,6 +6,13 @@
 
 - Please follow [this tutorial](https://developer.ibm.com/tutorials/mq-connect-app-queue-manager-containers/) for full instructions on installing docker and running IBM MQ Developer Edition in a container.
 
+### Objectives
+- Run an MQ queue manager in a container
+    - Explore the default developer configuration with the IBM MQ Console
+    - Put some messages with a simple Golang application
+- Secure a queue manager with TLS
+- Containerize a Java application and connect to the MQ queue manager container secured with TLS
+
 ## Pull the image
 ```
 docker pull ibmcom/mq:latest
