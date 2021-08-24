@@ -249,7 +249,7 @@ Add the following lines to the ```env.json``` file.
 ### Run the Java client sample app
 
 ```
-java -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStore=path-to-keys-directory/clientkey.jks -Djavax.net.ssl.trustStorePassword=passw0rd -Dcom.ibm.mq.cfg.useIBMCipherMappings=false -cp ./com.ibm.mq.allclient-9.2.3.0.jar:./javax.jms-api-2.0.1.jar:./json-simple-1.1.1.jar:. com.ibm.mq.samples.jms.JmsPut
+java -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStore=../../keys/clientkey.jks -Djavax.net.ssl.trustStorePassword=passw0rd -Dcom.ibm.mq.cfg.useIBMCipherMappings=false -cp ./com.ibm.mq.allclient-9.2.3.0.jar:./javax.jms-api-2.0.1.jar:./json-simple-1.1.1.jar:. com.ibm.mq.samples.jms.JmsPut
 ```
 
 The sample app should complete successfully with the message:
