@@ -323,7 +323,7 @@ docker build . -t mq-app
 ### Run your MQ JMS sample app 
 
 ```
-docker run --network techcon21 mq-app
+docker run --rm --network techcon21 mq-app
 ```
 
 The sample app should complete successfully with the message:
