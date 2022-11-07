@@ -16,7 +16,7 @@
 
 package com.ibm.mq.samples.jms;
 
-
+import java.io.Console;
 import javax.jms.Destination;
 import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
@@ -69,6 +69,13 @@ public class JmsPutGet {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		// Sanity check main() arguments and warn user
+		if (args.length > 0) {
+                	System.out.println("\n!!!! WARNING: You have provided arguments to the Java main() function. JVM arguments (such as -Djavax.net.ssl.trustStore) must be passed before the main class or .jar you wish to run.\n\n");
+                	Console c = System.console();
+                	System.out.println("Press the Enter key to continue");
+                	c.readLine();
+                }
 
 		// Variables
 		JMSContext context = null;
