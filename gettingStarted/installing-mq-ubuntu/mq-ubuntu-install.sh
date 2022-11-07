@@ -18,6 +18,7 @@
 # Requires apt
 # We need super user permissions for some steps
 
+
 # Before we start the install and config, check that the user created the group "mqclient"
 getent group mqclient
 returnCode=$?
@@ -33,6 +34,8 @@ fi
 
 # Download MQ Advanced from public repo
 cd ~
+# Navigating to a directory that is accessible by the user _apt (suggested is /tmp - could be replaced)
+cd /tmp
 wget -c https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/mqadv_dev920_ubuntu_x86-64.tar.gz
 returnCode=$?
 if [ $returnCode -eq 0 ]
@@ -122,7 +125,6 @@ fi
 # The group "mqm" is created during the installation. Add the current user to it
 adduser ${SUDO_USER:-${USER}} mqm
 echo "Successfully added ${SUDO_USER:-${USER}} to group mqm"
-
 
 
 exec sudo -u ${SUDO_USER:-${USER}} /bin/bash - << eof
