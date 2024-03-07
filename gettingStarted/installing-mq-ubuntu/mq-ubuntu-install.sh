@@ -20,6 +20,7 @@
 
 # Set the directory to download MQ Packages
 MQ_PACKAGES_DOWNLOAD_DIRECTORY=/tmp
+
 # Before we start the install and config, check that the user created the group "mqclient"
 getent group mqclient
 returnCode=$?
