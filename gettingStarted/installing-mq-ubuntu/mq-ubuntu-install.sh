@@ -38,7 +38,7 @@ fi
 cd ~
 # Navigating to a directory that is accessible by the user _apt (suggested is /tmp - could be replaced)
 cd ${MQ_PACKAGES_DOWNLOAD_DIRECTORY}
-wget -c https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/mqadv_dev920_ubuntu_x86-64.tar.gz
+wget -c https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/9.3.5.0-IBM-MQ-Advanced-for-Developers-UbuntuLinuxX64.tar.gz
 returnCode=$?
 if [ $returnCode -eq 0 ]
 then 
