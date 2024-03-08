@@ -50,10 +50,10 @@ else
 fi
 
 # Unzip and extract .tar.gz file
-gunzip mqadv_dev920_ubuntu_x86-64.tar.gz
+gunzip 9.3.5.0-IBM-MQ-Advanced-for-Developers-UbuntuLinuxX64.tar.gz
 echo ".gz extract complete"
 echo
-tar -xf ./mqadv_dev920_ubuntu_x86-64.tar
+tar -xf ./9.3.5.0-IBM-MQ-Advanced-for-Developers-UbuntuLinuxX64.tar.gz
 returnCode=$?
 if [ $returnCode -eq 0 ]
 then 
