@@ -53,7 +53,7 @@ fi
 gunzip 9.3.5.0-IBM-MQ-Advanced-for-Developers-UbuntuLinuxX64.tar.gz
 echo ".gz extract complete"
 echo
-tar -xf ./9.3.5.0-IBM-MQ-Advanced-for-Developers-UbuntuLinuxX64.tar.gz
+tar -xf ./9.3.5.0-IBM-MQ-Advanced-for-Developers-UbuntuLinuxX64.tar
 returnCode=$?
 if [ $returnCode -eq 0 ]
 then 
