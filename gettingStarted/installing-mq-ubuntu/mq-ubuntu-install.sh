@@ -18,6 +18,8 @@
 # Requires apt
 # We need super user permissions for some steps
 
+# Set the directory to download MQ Packages
+MQ_PACKAGES_DOWNLOAD_DIRECTORY=/tmp
 
 # Before we start the install and config, check that the user created the group "mqclient"
 getent group mqclient
@@ -35,8 +37,8 @@ fi
 # Download MQ Advanced from public repo
 cd ~
 # Navigating to a directory that is accessible by the user _apt (suggested is /tmp - could be replaced)
-cd /tmp
-wget -c https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/mqadv_dev920_ubuntu_x86-64.tar.gz
+cd ${MQ_PACKAGES_DOWNLOAD_DIRECTORY}
+wget -c https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/9.3.5.0-IBM-MQ-Advanced-for-Developers-UbuntuLinuxX64.tar.gz
 returnCode=$?
 if [ $returnCode -eq 0 ]
 then 
@@ -48,10 +50,10 @@ else
 fi
 
 # Unzip and extract .tar.gz file
-gunzip mqadv_dev920_ubuntu_x86-64.tar.gz
+gunzip 9.3.5.0-IBM-MQ-Advanced-for-Developers-UbuntuLinuxX64.tar.gz
 echo ".gz extract complete"
 echo
-tar -xf ./mqadv_dev920_ubuntu_x86-64.tar
+tar -xf ./9.3.5.0-IBM-MQ-Advanced-for-Developers-UbuntuLinuxX64.tar
 returnCode=$?
 if [ $returnCode -eq 0 ]
 then 
@@ -77,7 +79,7 @@ fi
 
 # Create a .list file to let the system add the new packages to the apt cache
 cd /etc/apt/sources.list.d
-MQ_PACKAGES_LOCATION=~/MQServer
+MQ_PACKAGES_LOCATION=${MQ_PACKAGES_DOWNLOAD_DIRECTORY}/MQServer
 echo "deb [trusted=yes] file:$MQ_PACKAGES_LOCATION ./" > mq-install.list
 apt-get update
 returnCode=$?
