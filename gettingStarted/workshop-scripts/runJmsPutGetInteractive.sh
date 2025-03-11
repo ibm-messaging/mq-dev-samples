@@ -123,6 +123,11 @@ checkReturnCode $? "Error changing to MQClient directory."
 
 confirmNextStep "Compile JmsPutGetInteractive Utility?"
 echo $ec Compiling JmsPutGetInteractive Utility application source.
+echo $ec Commands to run are:
+echo
+echo cd $(pwd)
+echo javac -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com/ibm/mq/samples/jms/$JmsAppSrc
+echo
 javac -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com/ibm/mq/samples/jms/$JmsAppSrc
 checkReturnCode $? "Error compiling JmsPutGetInteractive Utility."
 
@@ -193,7 +198,10 @@ then
   esac
 fi
 echo $ec Running...
-
+echo $ec Commands to run are:
+echo 
+echo java -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com.ibm.mq.samples.jms.$JmsAppClass $host_name $port $channel $qmgr $app_user -pw _your_password_ $queue $mode $tls
+echo
 java -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com.ibm.mq.samples.jms.$JmsAppClass $host_name $port $channel $qmgr $app_user $app_pwd $queue $mode $tls
 
 checkReturnCode $? "Error running JmsPutGetInteractive Utility."

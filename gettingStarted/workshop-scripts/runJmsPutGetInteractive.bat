@@ -74,6 +74,11 @@ CALL :confirmNextStep "Compile JmsPutGetInteractive Utility?"
 IF %ERRORLEVEL% GTR 0 (ECHO Exiting... & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
 ECHO %ec% Compiling JmsPutGetInteractive Utility application source.
+ECHO %ec% Commands to run are:
+ECHO. 
+FOR /F %%a in ('cd') DO ECHO cd %%a
+ECHO javac -cp .\%allClientJar%;.\%jmsApiJar%;.\%jsonJar%;. com\ibm\mq\samples\jms\%JmsAppSrc%
+ECHO.
 javac -cp .\%allClientJar%;.\%jmsApiJar%;.\%jsonJar%;. com\ibm\mq\samples\jms\%JmsAppSrc%
 IF %ERRORLEVEL% GTR 0 (ECHO Error compiling JmsPutGetInteractive Utility. & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
@@ -81,35 +86,39 @@ CALL :confirmNextStep "Run JMS Utility application?"
 IF %ERRORLEVEL% GTR 0 (ECHO Exiting... & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
 set /p host_name=Enter Hostname: 
-IF DEFINED host_name (SET host_name=-host %host_name%)
+IF DEFINED host_name (SET host_name=-host %host_name% )
 
 set /p port=Enter Port: 
-IF DEFINED port (SET port=-p %port%)
+IF DEFINED port (SET port=-p %port% )
 
 set /p channel=Enter Channel: 
-IF DEFINED channel (SET channel=-c %channel%)
+IF DEFINED channel (SET channel=-c %channel% )
 
 set /p qmgr=Enter Queue Manager Name: 
-IF DEFINED qmgr (SET qmgr=-qm %qmgr%)
+IF DEFINED qmgr (SET qmgr=-qm %qmgr% )
 
 set /p app_user=Enter App User: 
-IF DEFINED app_user (SET app_user=-u %app_user%)
+IF DEFINED app_user (SET app_user=-u %app_user% )
 
 set /p app_pwd=Enter App Password: 
-IF DEFINED app_pwd (SET app_pwd=-pw %app_pwd%)
+IF DEFINED app_pwd (SET app_pwd=-pw %app_pwd% )
 
 set /p queue=Enter Queue Name: 
-IF DEFINED queue (SET queue=-q %queue%)
+IF DEFINED queue (SET queue=-q %queue% )
 
 CHOICE /c yn /m "Use TLS?"
-IF %ERRORLEVEL% EQU 1 (SET TLS=-t) ELSE (SET TLS= )
+IF %ERRORLEVEL% EQU 1 (SET TLS=-t ) ELSE (SET TLS=)
 
 CHOICE /c pgb /m "Mode: Put, Get or Both?"
-IF %ERRORLEVEL% EQU 1 (SET mode=-put)
-IF %ERRORLEVEL% EQU 2 (SET mode=-get)
-IF %ERRORLEVEL% EQU 3 (SET mode= )
+IF %ERRORLEVEL% EQU 1 (SET mode=-put )
+IF %ERRORLEVEL% EQU 2 (SET mode=-get )
+IF %ERRORLEVEL% EQU 3 (SET mode=)
 
 ECHO %ec% Running...
+ECHO %ec% Commands to run are:
+ECHO.
+ECHO java -cp .\%allClientJar%;.\%jmsApiJar%;.\%jsonJar%;. com.ibm.mq.samples.jms.%JmsAppClass% %host_name%%port%%channel%%qmgr%%app_user%-pw _your_password_ %queue%%mode%%TLS%
+ECHO.
 
 java -cp .\%allClientJar%;.\%jmsApiJar%;.\%jsonJar%;. com.ibm.mq.samples.jms.%JmsAppClass% %host_name% %port% %channel% %qmgr% %app_user% %app_pwd% %queue% %mode% %TLS%
 IF %ERRORLEVEL% NEQ 0 (ECHO Error running JmsPutGetInteractive Utility.)
