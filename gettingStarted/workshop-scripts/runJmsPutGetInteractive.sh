@@ -18,9 +18,11 @@
 
 allClientVer="9.4.2.0"
 jmsApiVer="2.0.1"
+jsonVer="20220320"
 
 allClientJar="com.ibm.mq.allclient-$allClientVer.jar"
 jmsApiJar="javax.jms-api-$jmsApiVer.jar"
+jsonJar="json-$jsonVer.jar"
 JmsAppClass="JmsPutGetInteractive"
 JmsAppSrc="$JmsAppClass.java"
 
@@ -84,6 +86,15 @@ else
   echo $fileExistsMsg
 fi
 
+echo $ec Fethcing json Jar [$jsonJar].
+ if [ ! -f $jsonJar ]
+ then
+   curl -o $jsonJar https://repo1.maven.org/maven2/org/json/json/$jsonVer/$jsonJar
+   checkReturnCode $? "Error fethcing json Jar."
+ else
+   echo $fileExistsMsg
+ fi
+
 echo $ec Making Java directory sructure for JmsPutGetInteractive Utility.
 if [ ! -d com/ibm/mq/samples/jms ]
 then
@@ -112,7 +123,7 @@ checkReturnCode $? "Error changing to MQClient directory."
 
 confirmNextStep "Compile JmsPutGetInteractive Utility?"
 echo $ec Compiling JmsPutGetInteractive Utility application source.
-javac -cp ./$allClientJar:./$jmsApiJar:. com/ibm/mq/samples/jms/$JmsAppSrc
+javac -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com/ibm/mq/samples/jms/$JmsAppSrc
 checkReturnCode $? "Error compiling JmsPutGetInteractive Utility."
 
 confirmNextStep "Run JMS Utility application?"
@@ -183,7 +194,7 @@ then
 fi
 echo $ec Running...
 
-java -cp ./$allClientJar:./$jmsApiJar:. com.ibm.mq.samples.jms.$JmsAppClass $host_name $port $channel $qmgr $app_user $app_pwd $queue $mode $tls
+java -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com.ibm.mq.samples.jms.$JmsAppClass $host_name $port $channel $qmgr $app_user $app_pwd $queue $mode $tls
 
 checkReturnCode $? "Error running JmsPutGetInteractive Utility."
 
