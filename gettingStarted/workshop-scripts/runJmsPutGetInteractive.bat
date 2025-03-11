@@ -20,17 +20,15 @@ SET PATH=%~dps0;%PATH%
 REM Version Control
 SET allClientVer=9.4.2.0
 SET jmsApiVer=2.0.1
-SET jsonVer=20220320
 
 SET allClientJar=com.ibm.mq.allclient-%allClientVer%.jar
 SET jmsApiJar=javax.jms-api-%jmsApiVer%.jar
-SET jsonJar=json-%jsonVer%.jar
 SET JmsAppClass=JmsPutGetInteractive
 SET JmsAppSrc=%JmsAppClass%.java
 SET ec=###
 SET fileExistsMsg=%ec% File exists, skipping.
 
-ECHO %ec% Checking javac command is available.
+ECHO %ec% Checking JDK (javac command) is available.
 javac --version >NUL 2>&1
 IF %ERRORLEVEL% EQU 0 (ECHO OK.) ELSE (ECHO %ec% Java Compiler not installed! & EXIT /B %ERRORLEVEL%)
 
@@ -49,10 +47,6 @@ IF %ERRORLEVEL% GTR 1 (ECHO Error fetching IBM MQ all client Jar. & EXIT /B %ERR
 ECHO %ec% Fetching JMS API Jar [%jmsApiJar%].
 IF NOT EXIST %jmsApiJar% (curl -o %jmsApiJar% https://repo1.maven.org/maven2/javax/jms/javax.jms-api/%jmsApiVer%/%jmsApiJar%) ELSE (ECHO %fileExistsMsg%)
 IF %ERRORLEVEL% GTR 1 (Error fetching JMS API Jar. & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
-
-ECHO %ec% Fethcing json Jar [%jsonJar%].
-IF NOT EXIST %jsonJar% (curl -o %jsonJar% https://repo1.maven.org/maven2/org/json/json/%jsonVer%/%jsonJar%) ELSE (ECHO %fileExistsMsg%)
-IF %ERRORLEVEL% GTR 1 (Error fethcing json Jar. & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
 ECHO %ec% Making Java directory sructure for JmsPutGet Utility.
 IF NOT EXIST com\ibm\mq\samples\jms (md com\ibm\mq\samples\jms) ELSE (ECHO %fileExistsMsg%)
@@ -111,7 +105,7 @@ IF %ERRORLEVEL% EQU 3 (SET mode= )
 
 ECHO %ec% Running...
 
-java -cp .\%allClientJar%;.\%jmsApiJar%;.\%jsonJar%;. com.ibm.mq.samples.jms.%JmsAppClass% %host_name% %port% %channel% %qmgr% %app_user% %app_pwd% %queue% %mode% %TLS%
+java -cp .\%allClientJar%;.\%jmsApiJar%;. com.ibm.mq.samples.jms.%JmsAppClass% %host_name% %port% %channel% %qmgr% %app_user% %app_pwd% %queue% %mode% %TLS%
 IF %ERRORLEVEL% NEQ 0 (ECHO Error running JmsPutGet Utility.)
 
 REM Complete, exit 0

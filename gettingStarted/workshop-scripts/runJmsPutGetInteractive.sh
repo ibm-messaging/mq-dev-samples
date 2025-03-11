@@ -18,11 +18,9 @@
 
 allClientVer="9.4.2.0"
 jmsApiVer="2.0.1"
-jsonVer="20220320"
 
 allClientJar="com.ibm.mq.allclient-$allClientVer.jar"
 jmsApiJar="javax.jms-api-$jmsApiVer.jar"
-jsonJar="json-$jsonVer.jar"
 JmsAppClass="JmsPutGetInteractive"
 JmsAppSrc="$JmsAppClass.java"
 
@@ -51,7 +49,7 @@ confirmNextStep () {
   done
 }
 
-echo $ec Checking javac command is available.
+echo $ec Checking JDK (javac command) is available.
 javac --version >/dev/null 2>&1
 checkReturnCode $? "Java Compiler not installed!"
 
@@ -82,15 +80,6 @@ if [ ! -f $jmsApiJar ]
 then
   curl -o $jmsApiJar https://repo1.maven.org/maven2/javax/jms/javax.jms-api/$jmsApiVer/$jmsApiJar
   checkReturnCode $? "Error fetching JMS API Jar."
-else
-  echo $fileExistsMsg
-fi
-
-echo $ec Fethcing json Jar [$jsonJar].
-if [ ! -f $jsonJar ]
-then
-  curl -o $jsonJar https://repo1.maven.org/maven2/org/json/json/$jsonVer/$jsonJar
-  checkReturnCode $? "Error fethcing json Jar."
 else
   echo $fileExistsMsg
 fi
@@ -194,7 +183,7 @@ then
 fi
 echo $ec Running...
 
-java -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com.ibm.mq.samples.jms.$JmsAppClass $host_name $port $channel $qmgr $app_user $app_pwd $queue $mode $tls
+java -cp ./$allClientJar:./$jmsApiJar:. com.ibm.mq.samples.jms.$JmsAppClass $host_name $port $channel $qmgr $app_user $app_pwd $queue $mode $tls
 
 checkReturnCode $? "Error running JmsPutGet Utility."
 
