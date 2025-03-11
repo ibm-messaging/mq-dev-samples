@@ -76,7 +76,7 @@ IF %ERRORLEVEL% GTR 0 (ECHO Exiting... & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 ECHO %ec% Compiling JmsPutGetInteractive Utility application source.
 ECHO %ec% Commands to run are:
 ECHO. 
-FOR /F %%a in ('cd') DO ECHO cd %%a
+FOR /F %%a IN ('cd') DO ECHO cd %%a
 ECHO javac -cp .\%allClientJar%;.\%jmsApiJar%;.\%jsonJar%;. com\ibm\mq\samples\jms\%JmsAppSrc%
 ECHO.
 javac -cp .\%allClientJar%;.\%jmsApiJar%;.\%jsonJar%;. com\ibm\mq\samples\jms\%JmsAppSrc%
@@ -100,6 +100,7 @@ IF DEFINED qmgr (SET qmgr=-qm %qmgr% )
 set /p app_user=Enter App User: 
 IF DEFINED app_user (SET app_user=-u %app_user% )
 
+ECHO %ec% !!WARNING!! Password will be displayed in clear text. See %jmsAppSrc% or -pw options for workshop.
 set /p app_pwd=Enter App Password: 
 IF DEFINED app_pwd (SET app_pwd=-pw %app_pwd% )
 
