@@ -58,7 +58,7 @@ ECHO %ec% Making Java directory sructure for JmsPutGetInteractive Utility.
 IF NOT EXIST com\ibm\mq\samples\jms (md com\ibm\mq\samples\jms) ELSE (ECHO %fileExistsMsg%)
 IF %ERRORLEVEL% GTR 1 (Error making Java directory sructure for JmsPutGetInteractive Utility. & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
-ECHO %ec% Changing to com/ibm/mq/samples/jms directory.
+ECHO %ec% Changing to com\ibm\mq\samples\jms directory.
 cd com\ibm\mq\samples\jms
 IF %ERRORLEVEL% NEQ 0 (Error changing to com/ibm/mq/samples/jms directory. & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
