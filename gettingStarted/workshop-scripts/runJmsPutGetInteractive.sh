@@ -112,7 +112,7 @@ checkReturnCode $? "Error changing to MQClient directory."
 
 confirmNextStep "Compile JmsPutGet Utility?"
 echo $ec Compiling JmsPutGet Utility application source.
-javac -cp ./$allClientJar:./$jmsApiJar:./$jsonJar com/ibm/mq/samples/jms/$JmsAppSrc
+javac -cp ./$allClientJar:./$jmsApiJar:. com/ibm/mq/samples/jms/$JmsAppSrc
 checkReturnCode $? "Error compiling JmsPutGet Utility."
 
 confirmNextStep "Run JMS Utility application?"

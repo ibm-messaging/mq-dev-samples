@@ -68,7 +68,7 @@ CALL :confirmNextStep "Compile JmsPutGet Utility?"
 IF %ERRORLEVEL% GTR 0 (ECHO Exiting... & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
 ECHO %ec% Compiling JmsPutGet Utility application source.
-javac -cp .\%allClientJar%;.\%jmsApiJar%;.\%jsonJar% com\ibm\mq\samples\jms\%JmsAppSrc%
+javac -cp .\%allClientJar%;.\%jmsApiJar%;. com\ibm\mq\samples\jms\%JmsAppSrc%
 IF %ERRORLEVEL% GTR 0 (ECHO Error compiling JmsPutGet Utility. & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
 CALL :confirmNextStep "Run JMS Utility application?"
