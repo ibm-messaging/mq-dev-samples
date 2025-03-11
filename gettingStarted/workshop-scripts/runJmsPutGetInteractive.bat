@@ -54,28 +54,28 @@ ECHO %ec% Fethcing json Jar [%jsonJar%].
  IF NOT EXIST %jsonJar% (curl -o %jsonJar% https://repo1.maven.org/maven2/org/json/json/%jsonVer%/%jsonJar%) ELSE (ECHO %fileExistsMsg%)
  IF %ERRORLEVEL% GTR 1 (Error fethcing json Jar. & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
-ECHO %ec% Making Java directory sructure for JmsPutGet Utility.
+ECHO %ec% Making Java directory sructure for JmsPutGetInteractive Utility.
 IF NOT EXIST com\ibm\mq\samples\jms (md com\ibm\mq\samples\jms) ELSE (ECHO %fileExistsMsg%)
-IF %ERRORLEVEL% GTR 1 (Error making Java directory sructure for JmsPutGet Utility. & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
+IF %ERRORLEVEL% GTR 1 (Error making Java directory sructure for JmsPutGetInteractive Utility. & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
 ECHO %ec% Changing to com/ibm/mq/samples/jms directory.
 cd com\ibm\mq\samples\jms
 IF %ERRORLEVEL% NEQ 0 (Error changing to com/ibm/mq/samples/jms directory. & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
-ECHO %ec% Fethcing JmsPutGet Utility.
+ECHO %ec% Fethcing JmsPutGetInteractive Utility.
 IF NOT EXIST %jmsAppSrc% (curl -o %jmsAppSrc% https://raw.githubusercontent.com/ibm-messaging/mq-dev-samples/master/gettingStarted/jms/com/ibm/mq/samples/jms/%JmsAppSrc%) ELSE (ECHO %fileExistsMsg%)
-IF %ERRORLEVEL% GTR 1 (Error fetching JmsPutGet Utility. & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
+IF %ERRORLEVEL% GTR 1 (Error fetching JmsPutGetInteractive Utility. & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
 ECHO %ec% Changing to MQClient directory.
 cd ..\..\..\..\..
 IF %ERRORLEVEL% NEQ 0 (ECHO Error changing to MQClient directory. & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
-CALL :confirmNextStep "Compile JmsPutGet Utility?"
+CALL :confirmNextStep "Compile JmsPutGetInteractive Utility?"
 IF %ERRORLEVEL% GTR 0 (ECHO Exiting... & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
-ECHO %ec% Compiling JmsPutGet Utility application source.
+ECHO %ec% Compiling JmsPutGetInteractive Utility application source.
 javac -cp .\%allClientJar%;.\%jmsApiJar%;.\%jsonJar%;. com\ibm\mq\samples\jms\%JmsAppSrc%
-IF %ERRORLEVEL% GTR 0 (ECHO Error compiling JmsPutGet Utility. & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
+IF %ERRORLEVEL% GTR 0 (ECHO Error compiling JmsPutGetInteractive Utility. & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
 CALL :confirmNextStep "Run JMS Utility application?"
 IF %ERRORLEVEL% GTR 0 (ECHO Exiting... & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
@@ -112,7 +112,7 @@ IF %ERRORLEVEL% EQU 3 (SET mode= )
 ECHO %ec% Running...
 
 java -cp .\%allClientJar%;.\%jmsApiJar%;.\%jsonJar%;. com.ibm.mq.samples.jms.%JmsAppClass% %host_name% %port% %channel% %qmgr% %app_user% %app_pwd% %queue% %mode% %TLS%
-IF %ERRORLEVEL% NEQ 0 (ECHO Error running JmsPutGet Utility.)
+IF %ERRORLEVEL% NEQ 0 (ECHO Error running JmsPutGetInteractive Utility.)
 
 REM Complete, exit 0
 ECHO %ec% Done!
