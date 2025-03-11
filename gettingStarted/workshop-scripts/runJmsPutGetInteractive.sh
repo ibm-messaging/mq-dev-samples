@@ -49,7 +49,7 @@ confirmNextStep () {
   done
 }
 
-echo $ec Checking JDK (javac command) is available.
+echo $ec Checking JDK \(javac command\) is available.
 javac --version >/dev/null 2>&1
 checkReturnCode $? "Java Compiler not installed!"
 
@@ -84,11 +84,11 @@ else
   echo $fileExistsMsg
 fi
 
-echo $ec Making Java directory sructure for JmsPutGet Utility.
+echo $ec Making Java directory sructure for JmsPutGetInteractive Utility.
 if [ ! -d com/ibm/mq/samples/jms ]
 then
   mkdir -p com/ibm/mq/samples/jms
-  checkReturnCode $? "Error making Java directory sructure for JmsPutGet Utility."
+  checkReturnCode $? "Error making Java directory sructure for JmsPutGetInteractive Utility."
 else 
   echo $fileExistsMsg
 fi
@@ -97,11 +97,11 @@ echo $ec Changing to com/ibm/mq/samples/jms directory.
 cd com/ibm/mq/samples/jms
 checkReturnCode $? "Error changing to com/ibm/mq/samples/jms directory."
 
-echo $ec Fetching JmsPutGet Utility.
-if [ ! -f $jmsAppSrc ]
+echo $ec Fetching JmsPutGetInteractive Utility.
+if [ ! -f $JmsAppSrc ]
 then
-  curl -o $jmsAppSrc https://raw.githubusercontent.com/ibm-messaging/mq-dev-samples/master/gettingStarted/jms/com/ibm/mq/samples/jms/$JmsAppSrc
-  checkReturnCode $? "Error fethcing JmsPutGet Utility."
+  curl -o $JmsAppSrc https://raw.githubusercontent.com/ibm-messaging/mq-dev-samples/master/gettingStarted/jms/com/ibm/mq/samples/jms/$JmsAppSrc
+  checkReturnCode $? "Error fethcing JmsPutGetInteractive Utility."
 else 
   echo $fileExistsMsg
 fi
@@ -110,13 +110,13 @@ echo $ec Changing back to MQClient directory.
 cd -
 checkReturnCode $? "Error changing to MQClient directory."
 
-confirmNextStep "Compile JmsPutGet Utility?"
-echo $ec Compiling JmsPutGet Utility application source.
+confirmNextStep "Compile JmsPutGetInteractive Utility?"
+echo $ec Compiling JmsPutGetInteractive Utility application source.
 javac -cp ./$allClientJar:./$jmsApiJar:. com/ibm/mq/samples/jms/$JmsAppSrc
-checkReturnCode $? "Error compiling JmsPutGet Utility."
+checkReturnCode $? "Error compiling JmsPutGetInteractive Utility."
 
 confirmNextStep "Run JMS Utility application?"
-echo $ec Running JmsPutGet Utility application.
+echo $ec Running JmsPutGetInteractive Utility application.
 
 read -p "Enter hostname: " host_name
 if [ ! -z $host_name ]
@@ -185,7 +185,7 @@ echo $ec Running...
 
 java -cp ./$allClientJar:./$jmsApiJar:. com.ibm.mq.samples.jms.$JmsAppClass $host_name $port $channel $qmgr $app_user $app_pwd $queue $mode $tls
 
-checkReturnCode $? "Error running JmsPutGet Utility."
+checkReturnCode $? "Error running JmsPutGetInteractive Utility."
 
 echo $ec Done!
 exit 0
