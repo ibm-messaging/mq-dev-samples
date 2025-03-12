@@ -204,7 +204,7 @@ echo $ec Commands to run are:
 echo 
 echo $cmd -pw _your_password_
 echo
-$(echo $cmd $app_pwd)
+$(echo $cmd )
 
 checkReturnCode $? "Error running JmsPutGetInteractive Utility."
 
