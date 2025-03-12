@@ -31,7 +31,7 @@ SET ec=###
 SET fileExistsMsg=%ec% File exists, skipping.
 
 ECHO %ec% Checking JDK (javac command) is available.
-javac --version >NUL 2>&1
+WHERE javac >NUL 2>&1
 IF %ERRORLEVEL% EQU 0 (ECHO OK.) ELSE (ECHO %ec% Java Compiler not installed! & EXIT /B %ERRORLEVEL%)
 
 ECHO %ec% Making MQClient directory.
