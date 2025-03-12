@@ -202,7 +202,7 @@ echo $ec Running...
 cmd="java -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com.ibm.mq.samples.jms.$JmsAppClass $host_name $port $channel $qmgr $app_user $app_pwd $queue $mode $tls"
 echo $ec Commands to run are:
 echo 
-echo $cmd
+echo $cmd -pw _your_password_
 echo
 $(echo $cmd)
 
