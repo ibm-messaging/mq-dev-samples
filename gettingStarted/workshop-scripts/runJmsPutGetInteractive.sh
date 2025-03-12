@@ -124,11 +124,12 @@ checkReturnCode $? "Error changing to MQClient directory."
 confirmNextStep "Compile JmsPutGetInteractive Utility?"
 echo $ec Compiling JmsPutGetInteractive Utility application source.
 echo $ec Commands to run are:
+cmd="javac -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com/ibm/mq/samples/jms/$JmsAppSrc"
 echo
 echo cd $(pwd)
-echo javac -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com/ibm/mq/samples/jms/$JmsAppSrc
+echo $cmd
 echo
-javac -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com/ibm/mq/samples/jms/$JmsAppSrc
+$(echo $cmd)
 checkReturnCode $? "Error compiling JmsPutGetInteractive Utility."
 
 confirmNextStep "Run JMS Utility application?"
@@ -198,11 +199,12 @@ then
   esac
 fi
 echo $ec Running...
+cmd="java -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com.ibm.mq.samples.jms.$JmsAppClass $host_name $port $channel $qmgr $app_user $app_pwd $queue $mode $tls"
 echo $ec Commands to run are:
 echo 
-echo java -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com.ibm.mq.samples.jms.$JmsAppClass $host_name $port $channel $qmgr $app_user -pw _your_password_ $queue $mode $tls
+echo $cmd
 echo
-java -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com.ibm.mq.samples.jms.$JmsAppClass $host_name $port $channel $qmgr $app_user $app_pwd $queue $mode $tls
+$(echo $cmd)
 
 checkReturnCode $? "Error running JmsPutGetInteractive Utility."
 

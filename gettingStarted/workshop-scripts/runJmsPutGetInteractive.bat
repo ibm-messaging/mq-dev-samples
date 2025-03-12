@@ -75,10 +75,10 @@ IF %ERRORLEVEL% GTR 0 (ECHO Exiting... & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
 ECHO %ec% Compiling JmsPutGetInteractive Utility application source.
 ECHO %ec% Commands to run are:
-ECHO. 
+ECHO: 
 FOR /F %%a IN ('cd') DO ECHO cd %%a
 ECHO javac -cp .\%allClientJar%;.\%jmsApiJar%;.\%jsonJar%;. com\ibm\mq\samples\jms\%JmsAppSrc%
-ECHO.
+ECHO:
 javac -cp .\%allClientJar%;.\%jmsApiJar%;.\%jsonJar%;. com\ibm\mq\samples\jms\%JmsAppSrc%
 IF %ERRORLEVEL% GTR 0 (ECHO Error compiling JmsPutGetInteractive Utility. & EXIT /B %ERRORLEVEL%) ELSE (ECHO OK.)
 
@@ -100,8 +100,10 @@ IF DEFINED qmgr (SET qmgr=-qm %qmgr% )
 set /p app_user=Enter App User: 
 IF DEFINED app_user (SET app_user=-u %app_user% )
 
-ECHO %ec% !!WARNING!! Password will be displayed in clear text. See %jmsAppSrc% or -pw options for workshop.
-set /p app_pwd=Enter App Password: 
+ECHO Enter App Password: 
+WHERE Powershell >NUL 2>&1
+IF %ERRORLEVEL% EQU 0 (for /f %%i in ('Powershell -Command "$enc = Read-Host -AsSecureString; $stringValue = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($enc));echo $stringValue"') DO set app_pwd=%%i) ELSE (ECHO %ec% !!WARNING!! Password will be displayed in clear text. See %jmsAppSrc% or -pw options for workshop. & set /p app_pwd=)
+
 IF DEFINED app_pwd (SET app_pwd=-pw %app_pwd% )
 
 set /p queue=Enter Queue Name: 
@@ -117,9 +119,9 @@ IF %ERRORLEVEL% EQU 3 (SET mode=)
 
 ECHO %ec% Running...
 ECHO %ec% Commands to run are:
-ECHO.
+ECHO:
 ECHO java -cp .\%allClientJar%;.\%jmsApiJar%;.\%jsonJar%;. com.ibm.mq.samples.jms.%JmsAppClass% %host_name%%port%%channel%%qmgr%%app_user%-pw _your_password_ %queue%%mode%%TLS%
-ECHO.
+ECHO:
 
 java -cp .\%allClientJar%;.\%jmsApiJar%;.\%jsonJar%;. com.ibm.mq.samples.jms.%JmsAppClass% %host_name% %port% %channel% %qmgr% %app_user% %app_pwd% %queue% %mode% %TLS%
 IF %ERRORLEVEL% NEQ 0 (ECHO Error running JmsPutGetInteractive Utility.)
