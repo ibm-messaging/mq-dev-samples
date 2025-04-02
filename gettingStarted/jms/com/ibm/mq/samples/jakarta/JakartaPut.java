@@ -99,7 +99,7 @@
              cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
              cf.setStringProperty(WMQConstants.USERID, APP_USER);
              cf.setStringProperty(WMQConstants.PASSWORD, APP_PASSWORD);
-             cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, "*TLS12ORHIGHER");
+             // cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, "*TLS12ORHIGHER");
  
              // Create JMS objects
              context = cf.createContext();
