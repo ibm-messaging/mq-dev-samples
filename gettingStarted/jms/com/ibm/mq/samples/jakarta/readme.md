@@ -23,15 +23,15 @@ JakartaPutGetInteractive - Puts and Gets message from a queue (But it is interac
 
 -[latest IBM MQ Jakarta client jar](https://central.sonatype.com/search?q=a:com.ibm.mq.jakarta.client&smo=true)
  ```
-curl -o com.ibm.mq.jakarta.client-9.4.2.0.jar  https://repo1.maven.org/maven2/com/ibm/mq/com.ibm.mq.jakarta.client/9.4.2.0//com.ibm.mq.jakarta.client-9.4.2.0.jar 
+curl -o com.ibm.mq.jakarta.client-9.4.2.0.jar  https://repo1.maven.org/maven2/com/ibm/mq/com.ibm.mq.jakarta.client/9.4.2.0/com.ibm.mq.jakarta.client-9.4.2.0.jar 
 ```
  -[Jakarta Messaging API 2.0.1 jar](https://central.sonatype.com/search?q=a:jakarta.jms-api&smo=true)
  ```
-curl -o jakarta.jms-api-3.1.0.jar  https://repo1.maven.org/maven2/jakarta/jms/jakarta.jms-api/3.1.0//jakarta.jms-api-3.1.0.jar 
+curl -o jakarta.jms-api-3.1.0.jar  https://repo1.maven.org/maven2/jakarta/jms/jakarta.jms-api/3.1.0/jakarta.jms-api-3.1.0.jar 
 ```
  -[JSON parser](https://central.sonatype.com/artifact/org.json/json/20230227)
  ```
-curl -o json-20250107.jar https://repo1.maven.org/maven2/org/json/json/20250107//json-20250107.jar  
+curl -o json-20250107.jar https://repo1.maven.org/maven2/org/json/json/20250107/json-20250107.jar  
 ```
 
 ## Generate application credentials and an API key
