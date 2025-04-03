@@ -121,7 +121,7 @@ echo $ec Changing back to MQClient directory.
 cd -
 checkReturnCode $? "Error changing to MQClient directory."
 
-confirmNextStep "Compile JmsPutGetInteractive Utility?"
+read -p "Press Enter to compile JakartaPutGetInteractive Utility..."
 echo $ec Compiling JmsPutGetInteractive Utility application source.
 echo $ec Commands to run are:
 cmd="javac -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com/ibm/mq/samples/jms/$JmsAppSrc"
