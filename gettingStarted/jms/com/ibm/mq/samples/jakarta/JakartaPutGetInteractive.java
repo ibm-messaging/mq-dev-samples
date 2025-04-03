@@ -79,13 +79,13 @@ public class JakartaPutGetInteractive {
 	 * Set your Jakarta Connection Factory Variables HERE
 	 */
 	// Create variables for the connection to MQ
-	private static final String HOST = "_YOUR_HOSTNAME_"; // Host name or IP address
-	private static final int PORT = 1414; // Listener port for your queue manager
-	private static final String CHANNEL = "DEV.APP.SVRCONN"; // Channel name
-	private static final String QMGR = "QM1"; // Queue manager name
-	private static final String APP_USER = "app"; // User name that application uses to connect to MQ
-	private static final String APP_PASSWORD = "_APP_PASSWORD_"; // Password that the application uses to connect to MQ
-	private static final String QUEUE_NAME = "DEV.QUEUE.1"; // Queue that the application uses to put and get messages to and from
+	private static String HOST = "_YOUR_HOSTNAME_"; // Host name or IP address
+	private static int PORT = 1414; // Listener port for your queue manager
+	private static String CHANNEL = "DEV.APP.SVRCONN"; // Channel name
+	private static String QMGR = "QM1"; // Queue manager name
+	private static String APP_USER = "app"; // User name that application uses to connect to MQ
+	private static String APP_PASSWORD = "_APP_PASSWORD_"; // Password that the application uses to connect to MQ
+	private static String QUEUE_NAME = "DEV.QUEUE.1"; // Queue that the application uses to put and get messages to and from
 
 
 	/*
