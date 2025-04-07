@@ -111,7 +111,7 @@ checkReturnCode $? "Error changing to com/ibm/mq/samples/jakarta directory."
 echo $ec Fetching JakartaPutGetInteractive Utility.
 if [ ! -f $JakartaAppSrc ]
 then
-  curl -o $JakartaAppSrc https://raw.githubusercontent.com/Anitha-KJ/mq-dev-samples/refs/heads/anitha_jakarta_updates/gettingStarted/jms/com/ibm/mq/samples/jakarta/$JakartaAppSrc
+  curl -o $JakartaAppSrc https://raw.githubusercontent.com/ibm-messaging/mq-dev-samples/master/gettingStarted/jms/com/ibm/mq/samples/jakarta/$JakartaAppSrc
   checkReturnCode $? "Error fethcing JakartaPutGetInteractive Utility."
 else 
   echo $fileExistsMsg
