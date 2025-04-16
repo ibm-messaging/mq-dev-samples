@@ -10,9 +10,9 @@ cd.ConnectionName = b'localhost(1414)'
 cd.ChannelType = pymqi.CMQC.MQCHT_CLNTCONN
 cd.TransportType = pymqi.CMQC.MQXPT_TCP
 
-//cd.SSLCipherSpec = b'TLS_AES_256_GCM_SHA384'
-//sco = pymqi.SCO()
-//sco.KeyRepository = b'[!!your_keystore_location here!!]' # include file name but not file extension
+#cd.SSLCipherSpec = b'TLS_AES_256_GCM_SHA384'
+#sco = pymqi.SCO()
+#sco.KeyRepository = b'[!!your_keystore_location here!!]' # include file name but not file extension
 
 qmgr = pymqi.QueueManager(None)
 qmgr.connect_with_options(queue_manager, user='app', password='[!!password for user "app"!!]', cd=cd)
