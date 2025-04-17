@@ -121,7 +121,8 @@ echo $ec Changing back to MQClient directory.
 cd -
 checkReturnCode $? "Error changing to MQClient directory."
 
-read -p "Press Enter to compile JakartaPutGetInteractive Utility..."
+# confirmNextStep "Compile JmsPutGetInteractive Utility?"
+read -p "Press Enter to compile JmsPutGetInteractive Utility..."
 echo $ec Compiling JmsPutGetInteractive Utility application source.
 echo $ec Commands to run are:
 cmd="javac -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com/ibm/mq/samples/jms/$JmsAppSrc"
@@ -132,7 +133,7 @@ echo
 $(echo $cmd)
 checkReturnCode $? "Error compiling JmsPutGetInteractive Utility."
 
-read -p "Press Enter to compile JmsPutGetInteractive Utility..."
+confirmNextStep "Run JMS Utility application?"
 echo $ec Running JmsPutGetInteractive Utility application.
 
 read -p "Enter hostname: " host_name
@@ -189,6 +190,28 @@ then
 else tls="-t";
 fi
 
+read -p "Queue Manager is on cloud? (default Yes) [y]|[n] : " is_qmgr_on_cloud
+is_qmgr_on_cloud=${is_qmgr_on_cloud:-y}
+
+JAVA_HOME=$( /usr/libexec/java_home )
+DEFAULT_TRUST_STORE_PATH="$JAVA_HOME/lib/security/cacerts"
+TRUST_STORE_PASSWORD="changeit"  # Default password for cacerts
+TRUST_STORE_PATH="$DEFAULT_TRUST_STORE_PATH"
+
+if [ "$is_qmgr_on_cloud" == "n" ] || [ "$is_qmgr_on_cloud" == "N" ];
+then
+  read -p "Enter the path to your custom trust store: " TRUST_STORE_PATH
+  read -p "Enter the password for the custom trust store: " TRUST_STORE_PASSWORD
+fi
+
+read -p "Are you using IBM Cipher Mappings? (default Yes) [y]|[n]: " use_ibm_cipher
+use_ibm_cipher=${use_ibm_cipher:-y}
+USE_CIPHER_FLAG="true"
+
+if [ "$use_ibm_cipher" == "n" ] || [ "$use_ibm_cipher" == "N" ];
+then
+  USE_CIPHER_FLAG="false"
+fi
 read -p "Put, Get or Both (default Both) [p]|[g]|[b]" mode
 if [ ! -z $mode ]
 then
@@ -199,7 +222,7 @@ then
   esac
 fi
 echo $ec Running...
-cmd="java -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com.ibm.mq.samples.jms.$JmsAppClass $host_name $port $channel $qmgr $app_user $queue $mode $tls"
+cmd="java -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStore=$TRUST_STORE_PATH -Djavax.net.ssl.trustStorePassword=$TRUST_STORE_PASSWORD -Dcom.ibm.mq.cfg.useIBMCipherMappings=$USE_CIPHER_FLAG -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com.ibm.mq.samples.jms.$JmsAppClass $host_name $port $channel $qmgr $app_user $queue $mode $tls"
 echo $ec Commands to run are:
 echo 
 echo $cmd -pw _your_password_

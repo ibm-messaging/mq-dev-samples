@@ -16,15 +16,15 @@
 
 # Version control
 
-allClientVer="9.4.2.0"
-jmsApiVer="2.0.1"
-jsonVer="20220320"
+jakartaClientVer="9.4.2.0"
+jakartaApiVer="3.1.0"
+jsonVer="20250107"
 
-allClientJar="com.ibm.mq.allclient-$allClientVer.jar"
-jmsApiJar="javax.jms-api-$jmsApiVer.jar"
+jakartaClientJar="com.ibm.mq.jakarta.client-$jakartaClientVer.jar"
+jakartaApiJar="jakarta.jms-api-$jakartaApiVer.jar"
 jsonJar="json-$jsonVer.jar"
-JmsAppClass="JmsPutGetInteractive"
-JmsAppSrc="$JmsAppClass.java"
+JakartaAppClass="JakartaPutGetInteractive"
+JakartaAppSrc="$JakartaAppClass.java"
 
 ec="###"
 fileExistsMsg="$ec File exists, skipping."
@@ -68,20 +68,20 @@ echo $ec Changing to MQClient directory.
 cd MQClient
 checkReturnCode $? "Error changing to MQClient directory."
 
-echo $ec Fetching IBM MQ all client Jar [$allClientJar].
-if [ ! -f $allClientJar ]
+echo $ec Fetching IBM MQ jakarta client Jar [$jakartaClientJar].
+if [ ! -f $jakartaClientJar ]
 then
-  curl -o $allClientJar https://repo1.maven.org/maven2/com/ibm/mq/com.ibm.mq.allclient/$allClientVer/$allClientJar
-  checkReturnCode $? "Error fetching IBM MQ all client Jar."
+  curl -o $jakartaClientJar https://repo1.maven.org/maven2/com/ibm/mq/com.ibm.mq.jakarta.client/$jakartaClientVer/$jakartaClientJar
+  checkReturnCode $? "Error fetching IBM MQ jakarta client Jar."
 else
   echo $fileExistsMsg
 fi
 
-echo $ec Fetching JMS API Jar [$jmsApiJar].
-if [ ! -f $jmsApiJar ]
+echo $ec Fetching Jakarta API Jar [$jakartaApiJar].
+if [ ! -f $jakartaApiJar ]
 then
-  curl -o $jmsApiJar https://repo1.maven.org/maven2/javax/jms/javax.jms-api/$jmsApiVer/$jmsApiJar
-  checkReturnCode $? "Error fetching JMS API Jar."
+  curl -o $jakartaApiJar https://repo1.maven.org/maven2/jakarta/jms/jakarta.jms-api/$jakartaApiVer/$jakartaApiJar
+  checkReturnCode $? "Error fetching Jakarta API Jar."
 else
   echo $fileExistsMsg
 fi
@@ -95,24 +95,24 @@ echo $ec Fethcing json Jar [$jsonJar].
    echo $fileExistsMsg
  fi
 
-echo $ec Making Java directory sructure for JmsPutGetInteractive Utility.
-if [ ! -d com/ibm/mq/samples/jms ]
+echo $ec Making Java directory sructure for JakartaPutGetInteractive Utility.
+if [ ! -d com/ibm/mq/samples/jakarta ]
 then
-  mkdir -p com/ibm/mq/samples/jms
-  checkReturnCode $? "Error making Java directory sructure for JmsPutGetInteractive Utility."
+  mkdir -p com/ibm/mq/samples/jakarta
+  checkReturnCode $? "Error making Java directory sructure for JakartaPutGetInteractive Utility."
 else 
   echo $fileExistsMsg
 fi
 
-echo $ec Changing to com/ibm/mq/samples/jms directory.
-cd com/ibm/mq/samples/jms
-checkReturnCode $? "Error changing to com/ibm/mq/samples/jms directory."
+echo $ec Changing to com/ibm/mq/samples/jakarta directory.
+cd com/ibm/mq/samples/jakarta
+checkReturnCode $? "Error changing to com/ibm/mq/samples/jakarta directory."
 
-echo $ec Fetching JmsPutGetInteractive Utility.
-if [ ! -f $JmsAppSrc ]
+echo $ec Fetching JakartaPutGetInteractive Utility.
+if [ ! -f $JakartaAppSrc ]
 then
-  curl -o $JmsAppSrc https://raw.githubusercontent.com/ibm-messaging/mq-dev-samples/master/gettingStarted/jms/com/ibm/mq/samples/jms/$JmsAppSrc
-  checkReturnCode $? "Error fethcing JmsPutGetInteractive Utility."
+  curl -o $JakartaAppSrc https://raw.githubusercontent.com/ibm-messaging/mq-dev-samples/master/gettingStarted/jms/com/ibm/mq/samples/jakarta/$JakartaAppSrc
+  checkReturnCode $? "Error fethcing JakartaPutGetInteractive Utility."
 else 
   echo $fileExistsMsg
 fi
@@ -122,18 +122,18 @@ cd -
 checkReturnCode $? "Error changing to MQClient directory."
 
 read -p "Press Enter to compile JakartaPutGetInteractive Utility..."
-echo $ec Compiling JmsPutGetInteractive Utility application source.
+echo $ec Compiling JakartaPutGetInteractive Utility application source.
 echo $ec Commands to run are:
-cmd="javac -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com/ibm/mq/samples/jms/$JmsAppSrc"
+cmd="javac -cp ./$jakartaClientJar:./$jakartaApiJar:./$jsonJar:. com/ibm/mq/samples/jakarta/$JakartaAppSrc"
 echo
 echo cd $(pwd)
 echo $cmd
 echo
 $(echo $cmd)
-checkReturnCode $? "Error compiling JmsPutGetInteractive Utility."
+checkReturnCode $? "Error compiling JakartaPutGetInteractive Utility."
 
-read -p "Press Enter to compile JmsPutGetInteractive Utility..."
-echo $ec Running JmsPutGetInteractive Utility application.
+confirmNextStep "Run Jakarta Utility application?"
+echo $ec Running JakartaPutGetInteractive Utility application.
 
 read -p "Enter hostname: " host_name
 if [ ! -z $host_name ]
@@ -199,14 +199,14 @@ then
   esac
 fi
 echo $ec Running...
-cmd="java -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com.ibm.mq.samples.jms.$JmsAppClass $host_name $port $channel $qmgr $app_user $queue $mode $tls"
+cmd="java -cp ./$jakartaClientJar:./$jakartaApiJar:./$jsonJar:. com.ibm.mq.samples.jakarta.$JakartaAppClass $host_name $port $channel $qmgr $app_user $queue $mode $tls"
 echo $ec Commands to run are:
 echo 
 echo $cmd -pw _your_password_
 echo
 $(echo $cmd $app_pwd)
 
-checkReturnCode $? "Error running JmsPutGetInteractive Utility."
+checkReturnCode $? "Error running JakartaPutGetInteractive Utility."
 
 echo $ec Done!
 exit 0
