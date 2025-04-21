@@ -70,7 +70,7 @@ public class JakartaPutGetInteractive {
 	private static Boolean doGet = true;
 	private static Boolean doPut = true;
 	// Set doTls true for TLS, TLS is off (false) by default
-	private static Boolean doTls = true;
+	private static Boolean doTls = false;
 
 	// System exit status value (assume unset value to be 1)
 	private static int status = 1;

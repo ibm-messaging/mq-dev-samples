@@ -121,7 +121,6 @@ echo $ec Changing back to MQClient directory.
 cd -
 checkReturnCode $? "Error changing to MQClient directory."
 
-# confirmNextStep "Compile JakartaPutGetInteractive Utility?"
 read -p "Press Enter to compile JakartaPutGetInteractive Utility..."
 echo $ec Compiling JakartaPutGetInteractive Utility application source.
 echo $ec Commands to run are:
@@ -180,6 +179,9 @@ then
   queue="-q $queue"
 fi
 
+read -p "Queue Manager is on cloud? (default Yes) [y]|[n] : " is_qmgr_on_cloud
+is_qmgr_on_cloud=${is_qmgr_on_cloud:-y}
+
 read -p "Do TLS (default Yes) [y]|[n]" tls
 if [ ! -z $tls ]
 then
@@ -188,30 +190,39 @@ then
     * ) tls="-t";;
   esac
 else tls="-t";
-fi
+fi 
 
-read -p "Queue Manager is on cloud? (default Yes) [y]|[n] : " is_qmgr_on_cloud
-is_qmgr_on_cloud=${is_qmgr_on_cloud:-y}
-
-JAVA_HOME=$( /usr/libexec/java_home )
-DEFAULT_TRUST_STORE_PATH="$JAVA_HOME/lib/security/cacerts"
-TRUST_STORE_PASSWORD="changeit"  # Default password for cacerts
-TRUST_STORE_PATH="$DEFAULT_TRUST_STORE_PATH"
-
-if [ "$is_qmgr_on_cloud" == "n" ] || [ "$is_qmgr_on_cloud" == "N" ];
+if { [ "$is_qmgr_on_cloud" == "n" ] || [ "$is_qmgr_on_cloud" == "N" ]; } && [ "$tls" == "-t" ];
 then
-  read -p "Enter the path to your custom trust store: " TRUST_STORE_PATH
-  read -p "Enter the password for the custom trust store: " TRUST_STORE_PASSWORD
+    read -p "Enter the trust store type: " TRUST_STORE_TYPE
+    read -p "Enter the path to your custom trust store: " TRUST_STORE_PATH
+    read -p "Enter the password for the custom trust store: " TRUST_STORE_PASSWORD
+    read -p "Are you using IBM Cipher Mappings? (default Yes) [y]|[n]: " use_ibm_cipher
+    use_ibm_cipher=${use_ibm_cipher:-y}
+    USE_CIPHER_FLAG="true"
+
+    if [ "$use_ibm_cipher" == "n" ] || [ "$use_ibm_cipher" == "N" ];
+    then
+    USE_CIPHER_FLAG="false"
+    fi
 fi
 
-read -p "Are you using IBM Cipher Mappings? (default Yes) [y]|[n]: " use_ibm_cipher
-use_ibm_cipher=${use_ibm_cipher:-y}
-USE_CIPHER_FLAG="true"
+cmd="java"
 
-if [ "$use_ibm_cipher" == "n" ] || [ "$use_ibm_cipher" == "N" ];
-then
-  USE_CIPHER_FLAG="false"
-fi
+add_java_prop_if_set() {
+  local key="$1"
+  local val="$2"
+  if [ -n "$val" ]; then
+    cmd="$cmd -D$key=$val"
+  fi
+}
+
+# Optional Java system properties
+add_java_prop_if_set "javax.net.ssl.trustStoreType" "$TRUST_STORE_TYPE"
+add_java_prop_if_set "javax.net.ssl.trustStore" "$TRUST_STORE_PATH"
+add_java_prop_if_set "javax.net.ssl.trustStorePassword" "$TRUST_STORE_PASSWORD"
+add_java_prop_if_set "com.ibm.mq.cfg.useIBMCipherMappings" "$USE_CIPHER_FLAG"
+
 read -p "Put, Get or Both (default Both) [p]|[g]|[b]" mode
 if [ ! -z $mode ]
 then
@@ -222,7 +233,7 @@ then
   esac
 fi
 echo $ec Running...
-cmd="java -Djavax.net.ssl.trustStoreType=jks -Djavax.net.ssl.trustStore=$TRUST_STORE_PATH -Djavax.net.ssl.trustStorePassword=$TRUST_STORE_PASSWORD -Dcom.ibm.mq.cfg.useIBMCipherMappings=$USE_CIPHER_FLAG -cp ./$jakartaClientJar:./$jakartaApiJar:./$jsonJar:. com.ibm.mq.samples.jakarta.$JakartaAppClass $host_name $port $channel $qmgr $app_user $queue $mode $tls"
+cmd="$cmd -cp ./$jakartaClientJar:./$jakartaApiJar:./$jsonJar:. com.ibm.mq.samples.jakarta.$JakartaAppClass $host_name $port $channel $qmgr $app_user $queue $mode $tls"
 echo $ec Commands to run are:
 echo 
 echo $cmd -pw _your_password_
