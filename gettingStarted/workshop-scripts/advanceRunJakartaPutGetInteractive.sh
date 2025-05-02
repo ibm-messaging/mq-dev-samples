@@ -135,6 +135,8 @@ checkReturnCode $? "Error compiling JakartaPutGetInteractive Utility."
 confirmNextStep "Run Jakarta Utility application?"
 echo $ec Running JakartaPutGetInteractive Utility application.
 
+cmd="java"
+
 read -p "Enter hostname: " host_name
 if [ ! -z $host_name ]
 then
@@ -179,9 +181,6 @@ then
   queue="-q $queue"
 fi
 
-read -p "Queue Manager is on cloud? (default Yes) [y]|[n] : " is_qmgr_on_cloud
-is_qmgr_on_cloud=${is_qmgr_on_cloud:-y}
-
 read -p "Do TLS (default Yes) [y]|[n]" tls
 if [ ! -z $tls ]
 then
@@ -191,37 +190,40 @@ then
   esac
 else tls="-t";
 fi 
+### If you want to pass your truststore path and password and test the self signed certificates for the tls connection uncomment the below code and   ###
+### comment out the "cf.setIntProperty(MQConstants.CERTIFICATE_VALIDATION_POLICY, MQConstants.MQ_CERT_VAL_POLICY_NONE);" line in the application code ###
 
-if { [ "$is_qmgr_on_cloud" == "n" ] || [ "$is_qmgr_on_cloud" == "N" ]; } && [ "$tls" == "-t" ];
-then
-    read -p "Enter the trust store type: " TRUST_STORE_TYPE
-    read -p "Enter the path to your custom trust store: " TRUST_STORE_PATH
-    read -p "Enter the password for the custom trust store: " TRUST_STORE_PASSWORD
-    read -p "Are you using IBM Cipher Mappings? (default Yes) [y]|[n]: " use_ibm_cipher
-    use_ibm_cipher=${use_ibm_cipher:-y}
-    USE_CIPHER_FLAG="true"
+# read -p "Queue Manager is on cloud? (default Yes) [y]|[n] : " is_qmgr_on_cloud
+# is_qmgr_on_cloud=${is_qmgr_on_cloud:-y}
 
-    if [ "$use_ibm_cipher" == "n" ] || [ "$use_ibm_cipher" == "N" ];
-    then
-    USE_CIPHER_FLAG="false"
-    fi
-fi
+# if { [ "$is_qmgr_on_cloud" == "n" ] || [ "$is_qmgr_on_cloud" == "N" ]; } && [ "$tls" == "-t" ];
+# then
+#     read -p "Enter the trust store type: " TRUST_STORE_TYPE
+#     read -p "Enter the path to your custom trust store: " TRUST_STORE_PATH
+#     read -p "Enter the password for the custom trust store: " TRUST_STORE_PASSWORD
+#     read -p "Are you using IBM Cipher Mappings? (default Yes) [y]|[n]: " use_ibm_cipher
+#     use_ibm_cipher=${use_ibm_cipher:-y}
+#     USE_CIPHER_FLAG="true"
 
-cmd="java"
+#     if [ "$use_ibm_cipher" == "n" ] || [ "$use_ibm_cipher" == "N" ];
+#     then
+#     USE_CIPHER_FLAG="false"
+#     fi
+# fi
 
-add_java_prop_if_set() {
-  local key="$1"
-  local val="$2"
-  if [ -n "$val" ]; then
-    cmd="$cmd -D$key=$val"
-  fi
-}
+# add_java_prop_if_set() {
+#   local key="$1"
+#   local val="$2"
+#   if [ -n "$val" ]; then
+#     cmd="$cmd -D$key=$val"
+#   fi
+# }
 
-# Optional Java system properties
-add_java_prop_if_set "javax.net.ssl.trustStoreType" "$TRUST_STORE_TYPE"
-add_java_prop_if_set "javax.net.ssl.trustStore" "$TRUST_STORE_PATH"
-add_java_prop_if_set "javax.net.ssl.trustStorePassword" "$TRUST_STORE_PASSWORD"
-add_java_prop_if_set "com.ibm.mq.cfg.useIBMCipherMappings" "$USE_CIPHER_FLAG"
+# # Optional Java system properties
+# add_java_prop_if_set "javax.net.ssl.trustStoreType" "$TRUST_STORE_TYPE"
+# add_java_prop_if_set "javax.net.ssl.trustStore" "$TRUST_STORE_PATH"
+# add_java_prop_if_set "javax.net.ssl.trustStorePassword" "$TRUST_STORE_PASSWORD"
+# add_java_prop_if_set "com.ibm.mq.cfg.useIBMCipherMappings" "$USE_CIPHER_FLAG"
 
 read -p "Put, Get or Both (default Both) [p]|[g]|[b]" mode
 if [ ! -z $mode ]
@@ -233,6 +235,9 @@ then
   esac
 fi
 echo $ec Running...
+
+# If you want to see the TLS handshake uncomment the below line
+# cmd="$cmd -Djavax.net.debug=ssl,handshake"
 cmd="$cmd -cp ./$jakartaClientJar:./$jakartaApiJar:./$jsonJar:. com.ibm.mq.samples.jakarta.$JakartaAppClass $host_name $port $channel $qmgr $app_user $queue $mode $tls"
 echo $ec Commands to run are:
 echo 
@@ -244,3 +249,4 @@ checkReturnCode $? "Error running JakartaPutGetInteractive Utility."
 
 echo $ec Done!
 exit 0
+

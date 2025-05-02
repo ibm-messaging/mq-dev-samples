@@ -30,6 +30,8 @@ import java.io.Console;
 import com.ibm.msg.client.jakarta.jms.JmsConnectionFactory;
 import com.ibm.msg.client.jakarta.jms.JmsFactoryFactory;
 import com.ibm.msg.client.jakarta.wmq.WMQConstants;
+import com.ibm.mq.constants.MQConstants;
+
 
 /**
  * A minimal and simple application for Intereactive Point-to-point messaging.
@@ -86,12 +88,9 @@ public class JakartaPutGetInteractive {
 	private static String APP_USER = "app"; // User name that application uses to connect to MQ
 	private static String APP_PASSWORD = "_APP_PASSWORD_"; // Password that the application uses to connect to MQ
 	private static String QUEUE_NAME = "DEV.QUEUE.1"; // Queue that the application uses to put and get messages to and from
-
-
 	/*
 	 * Note: you should not need to edit below this line for the workshop
 	 */
-
 
 	/**
 	 * Main method
@@ -125,6 +124,8 @@ public class JakartaPutGetInteractive {
 			cf.setStringProperty(WMQConstants.PASSWORD, APP_PASSWORD);
 			if (doTls) {
 				cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, "*TLS12ORHIGHER");
+				cf.setIntProperty(MQConstants.CERTIFICATE_VALIDATION_POLICY, MQConstants.MQ_CERT_VAL_POLICY_NONE);
+
 			}
 
 			// Create Jakarta objects
