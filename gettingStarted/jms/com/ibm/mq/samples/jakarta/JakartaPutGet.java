@@ -29,6 +29,7 @@ import java.io.Console;
 import com.ibm.msg.client.jakarta.jms.JmsConnectionFactory;
 import com.ibm.msg.client.jakarta.jms.JmsFactoryFactory;
 import com.ibm.msg.client.jakarta.wmq.WMQConstants;
+import com.ibm.mq.constants.MQConstants;
 
 /**
  * A minimal and simple application for Point-to-point messaging.
@@ -58,8 +59,8 @@ public class JakartaPutGet {
     // Create variables for the connection to MQ
      // Create variables for the connection to MQ
     private static final String HOST = "_YOUR_HOSTNAME_"; // Host name or IP address
-    private static final int PORT = _YOUR_PORT_; // Listener port for your queue manager
-    private static final String CHANNEL = "_DEV_OR_CLOUD_.APP.SVRCONN"; // Channel name
+    private static final int PORT = 1414; // Listener port for your queue manager
+    private static final String CHANNEL = "DEV.APP.SVRCONN"; // Channel name
     private static final String QMGR = "QM1"; // Queue manager name
     private static final String APP_USER = "app"; // User name that application uses to connect to MQ
     private static final String APP_PASSWORD = "_APP_PASSWORD_"; // Password that the application uses to connect to MQ
@@ -102,7 +103,8 @@ public class JakartaPutGet {
             cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
             cf.setStringProperty(WMQConstants.USERID, APP_USER);
             cf.setStringProperty(WMQConstants.PASSWORD, APP_PASSWORD);
-            //cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, "*TLS12ORHIGHER");
+            // cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, "*TLS12ORHIGHER");
+			// cf.setIntProperty(MQConstants.CERTIFICATE_VALIDATION_POLICY, MQConstants.MQ_CERT_VAL_POLICY_NONE);
 
             // Create Jakarta objects
             context = cf.createContext();
