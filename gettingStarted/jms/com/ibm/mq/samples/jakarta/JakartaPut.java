@@ -30,7 +30,6 @@
  import com.ibm.msg.client.jakarta.jms.JmsFactoryFactory;
  import com.ibm.msg.client.jakarta.wmq.WMQConstants;
  import com.ibm.mq.constants.MQConstants;
- 
  import com.ibm.mq.jakarta.jms.MQDestination;
  
  
@@ -100,8 +99,8 @@
              cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
              cf.setStringProperty(WMQConstants.USERID, APP_USER);
              cf.setStringProperty(WMQConstants.PASSWORD, APP_PASSWORD);
-            // cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, "*TLS12ORHIGHER");
-	    // cf.setIntProperty(MQConstants.CERTIFICATE_VALIDATION_POLICY, MQConstants.MQ_CERT_VAL_POLICY_NONE);
+             // cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, "*TLS12ORHIGHER");
+	           // cf.setIntProperty(MQConstants.CERTIFICATE_VALIDATION_POLICY, MQConstants.MQ_CERT_VAL_POLICY_NONE);
  
              // Create JMS objects
              context = cf.createContext();
