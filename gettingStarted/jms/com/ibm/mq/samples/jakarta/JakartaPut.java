@@ -101,7 +101,7 @@
              cf.setStringProperty(WMQConstants.USERID, APP_USER);
              cf.setStringProperty(WMQConstants.PASSWORD, APP_PASSWORD);
             // cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, "*TLS12ORHIGHER");
-			// cf.setIntProperty(MQConstants.CERTIFICATE_VALIDATION_POLICY, MQConstants.MQ_CERT_VAL_POLICY_NONE);
+	    // cf.setIntProperty(MQConstants.CERTIFICATE_VALIDATION_POLICY, MQConstants.MQ_CERT_VAL_POLICY_NONE);
  
              // Create JMS objects
              context = cf.createContext();
