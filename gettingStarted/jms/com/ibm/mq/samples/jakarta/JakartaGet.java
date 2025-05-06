@@ -1,5 +1,5 @@
 /*
-* (c) Copyright IBM Corporation 2018
+* (c) Copyright IBM Corporation 2025
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,19 +14,21 @@
 * limitations under the License.
 */
 
-package com.ibm.mq.samples.jms;
+package com.ibm.mq.samples.jakarta;
 
+// Use these imports for building with Jakarta Messaging
+import jakarta.jms.Destination;
+import jakarta.jms.JMSConsumer;
+import jakarta.jms.JMSProducer;
+import jakarta.jms.JMSContext;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.TextMessage;
+import jakarta.jms.JMSRuntimeException;
 
-import javax.jms.Destination;
-import javax.jms.JMSConsumer;
-import javax.jms.JMSContext;
-import javax.jms.JMSException;
-import javax.jms.JMSProducer;
-import javax.jms.TextMessage;
-
-import com.ibm.msg.client.jms.JmsConnectionFactory;
-import com.ibm.msg.client.jms.JmsFactoryFactory;
-import com.ibm.msg.client.wmq.WMQConstants;
+import com.ibm.msg.client.jakarta.jms.JmsConnectionFactory;
+import com.ibm.msg.client.jakarta.jms.JmsFactoryFactory;
+import com.ibm.msg.client.jakarta.wmq.WMQConstants;
 import com.ibm.mq.constants.MQConstants;
 
 /**
@@ -38,7 +40,7 @@ import com.ibm.mq.constants.MQConstants;
  *
  * Notes:
  *
- * API type: JMS API (v2.0, simplified domain)
+ * API type: Jakarta API (JMS v3.0, simplified domain)
  *
  * Messaging domain: Point-to-point
  *
@@ -49,7 +51,7 @@ import com.ibm.mq.constants.MQConstants;
  * JNDI in use: No
  *
  */
-public class JmsPut {
+public class JakartaGet {
 
 	// System exit status value (assume unset value to be 1)
 	private static int status = 1;
@@ -63,7 +65,6 @@ public class JmsPut {
 	private static final String APP_PASSWORD = "_APP_PASSWORD_"; // Password that the application uses to connect to MQ
 	private static final String QUEUE_NAME = "DEV.QUEUE.1"; // Queue that the application uses to put and get messages to and from
 
-
 	/**
 	 * Main method
 	 *
@@ -71,7 +72,7 @@ public class JmsPut {
 	 */
 	public static void main(String[] args) {
 
-		// Variables
+		// Jakarta object variables
 		JMSContext context = null;
 		Destination destination = null;
 		JMSProducer producer = null;
@@ -81,7 +82,7 @@ public class JmsPut {
 
 		try {
 			// Create a connection factory
-			JmsFactoryFactory ff = JmsFactoryFactory.getInstance(WMQConstants.WMQ_PROVIDER);
+			JmsFactoryFactory ff = JmsFactoryFactory.getInstance(WMQConstants.JAKARTA_WMQ_PROVIDER);
 			JmsConnectionFactory cf = ff.createConnectionFactory();
 
 			// Set the properties
@@ -90,25 +91,23 @@ public class JmsPut {
 			cf.setStringProperty(WMQConstants.WMQ_CHANNEL, CHANNEL);
 			cf.setIntProperty(WMQConstants.WMQ_CONNECTION_MODE, WMQConstants.WMQ_CM_CLIENT);
 			cf.setStringProperty(WMQConstants.WMQ_QUEUE_MANAGER, QMGR);
-			cf.setStringProperty(WMQConstants.WMQ_APPLICATIONNAME, "JmsPutGet (JMS)");
+			cf.setStringProperty(WMQConstants.WMQ_APPLICATIONNAME, "JakartaGet (Jakarta)");
 			cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
 			cf.setStringProperty(WMQConstants.USERID, APP_USER);
 			cf.setStringProperty(WMQConstants.PASSWORD, APP_PASSWORD);
-			//cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, "*TLS12ORHIGHER");
+			// cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, "*TLS12ORHIGHER");
 			//cf.setIntProperty(MQConstants.CERTIFICATE_VALIDATION_POLICY, MQConstants.MQ_CERT_VAL_POLICY_NONE);
 
-			// Create JMS objects
+			// Create Jakarta objects
 			context = cf.createContext();
 			destination = context.createQueue("queue:///" + QUEUE_NAME);
 
-			long uniqueNumber = System.currentTimeMillis() % 1000;
-			TextMessage message = context.createTextMessage("Your lucky number today is " + uniqueNumber);
+			consumer = context.createConsumer(destination); // autoclosable
+			String receivedMessage = consumer.receiveBody(String.class, 15000); // in ms or 15 seconds
 
-			producer = context.createProducer();
-			producer.send(destination, message);
-			System.out.println("Sent message:\n" + message);
+			System.out.println("\nReceived message:\n" + receivedMessage);
 
-                        context.close();
+			context.close();
 
 			recordSuccess();
 		} catch (JMSException jmsex) {

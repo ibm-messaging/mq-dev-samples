@@ -121,7 +121,7 @@ echo $ec Changing back to MQClient directory.
 cd -
 checkReturnCode $? "Error changing to MQClient directory."
 
-read -p "Press Enter to compile JakartaPutGetInteractive Utility..."
+read -p "Press Enter to compile JmsPutGetInteractive Utility..."
 echo $ec Compiling JmsPutGetInteractive Utility application source.
 echo $ec Commands to run are:
 cmd="javac -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com/ibm/mq/samples/jms/$JmsAppSrc"
@@ -132,8 +132,10 @@ echo
 $(echo $cmd)
 checkReturnCode $? "Error compiling JmsPutGetInteractive Utility."
 
-read -p "Press Enter to compile JmsPutGetInteractive Utility..."
+confirmNextStep "Run JMS Utility application?"
 echo $ec Running JmsPutGetInteractive Utility application.
+
+cmd="java"
 
 read -p "Enter hostname: " host_name
 if [ ! -z $host_name ]
@@ -187,7 +189,42 @@ then
     * ) tls="-t";;
   esac
 else tls="-t";
-fi
+fi 
+
+### If you want to pass your truststore path and password and test the self signed certificates for the tls connection uncomment the below code and   ###
+### comment out the "cf.setIntProperty(MQConstants.CERTIFICATE_VALIDATION_POLICY, MQConstants.MQ_CERT_VAL_POLICY_NONE);" line in the application code ###
+
+# read -p "Queue Manager is on cloud? (default Yes) [y]|[n] : " is_qmgr_on_cloud
+# is_qmgr_on_cloud=${is_qmgr_on_cloud:-y}
+
+# if { [ "$is_qmgr_on_cloud" == "n" ] || [ "$is_qmgr_on_cloud" == "N" ]; } && [ "$tls" == "-t" ];
+# then
+#     read -p "Enter the trust store type: " TRUST_STORE_TYPE
+#     read -p "Enter the path to your custom trust store: " TRUST_STORE_PATH
+#     read -p "Enter the password for the custom trust store: " TRUST_STORE_PASSWORD
+#     read -p "Are you using IBM Cipher Mappings? (default Yes) [y]|[n]: " use_ibm_cipher
+#     use_ibm_cipher=${use_ibm_cipher:-y}
+#     USE_CIPHER_FLAG="true"
+
+#     if [ "$use_ibm_cipher" == "n" ] || [ "$use_ibm_cipher" == "N" ];
+#     then
+#     USE_CIPHER_FLAG="false"
+#     fi
+# fi
+
+# add_java_prop_if_set() {
+#   local key="$1"
+#   local val="$2"
+#   if [ -n "$val" ]; then
+#     cmd="$cmd -D$key=$val"
+#   fi
+# }
+
+# # Optional Java system properties
+# add_java_prop_if_set "javax.net.ssl.trustStoreType" "$TRUST_STORE_TYPE"
+# add_java_prop_if_set "javax.net.ssl.trustStore" "$TRUST_STORE_PATH"
+# add_java_prop_if_set "javax.net.ssl.trustStorePassword" "$TRUST_STORE_PASSWORD"
+# add_java_prop_if_set "com.ibm.mq.cfg.useIBMCipherMappings" "$USE_CIPHER_FLAG"
 
 read -p "Put, Get or Both (default Both) [p]|[g]|[b]" mode
 if [ ! -z $mode ]
@@ -199,7 +236,11 @@ then
   esac
 fi
 echo $ec Running...
-cmd="java -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com.ibm.mq.samples.jms.$JmsAppClass $host_name $port $channel $qmgr $app_user $queue $mode $tls"
+
+# If you want to see the TLS handshake uncomment the below line
+# cmd="$cmd -Djavax.net.debug=ssl,handshake"
+
+cmd="$cmd -cp ./$allClientJar:./$jmsApiJar:./$jsonJar:. com.ibm.mq.samples.jms.$JmsAppClass $host_name $port $channel $qmgr $app_user $queue $mode $tls"
 echo $ec Commands to run are:
 echo 
 echo $cmd -pw _your_password_

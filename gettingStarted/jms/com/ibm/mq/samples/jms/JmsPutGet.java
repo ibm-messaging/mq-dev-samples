@@ -27,6 +27,7 @@ import javax.jms.TextMessage;
 import com.ibm.msg.client.jms.JmsConnectionFactory;
 import com.ibm.msg.client.jms.JmsFactoryFactory;
 import com.ibm.msg.client.wmq.WMQConstants;
+import com.ibm.mq.constants.MQConstants;
 
 /**
  * A minimal and simple application for Point-to-point messaging.
@@ -101,6 +102,7 @@ public class JmsPutGet {
 			cf.setStringProperty(WMQConstants.USERID, APP_USER);
 			cf.setStringProperty(WMQConstants.PASSWORD, APP_PASSWORD);
 			//cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, "*TLS12ORHIGHER");
+			//cf.setIntProperty(MQConstants.CERTIFICATE_VALIDATION_POLICY, MQConstants.MQ_CERT_VAL_POLICY_NONE);
 
 			// Create JMS objects
 			context = cf.createContext();
