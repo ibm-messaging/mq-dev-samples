@@ -132,7 +132,7 @@ echo
 $(echo $cmd)
 checkReturnCode $? "Error compiling JmsPutGetInteractive Utility."
 
-read -p "Press Enter to compile JmsPutGetInteractive Utility..."
+read -p "Press Enter to run JmsPutGetInteractive Utility..."
 echo $ec Running JmsPutGetInteractive Utility application.
 
 read -p "Enter hostname: " host_name
