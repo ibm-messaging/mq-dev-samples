@@ -75,7 +75,7 @@ public class MessageInspector {
             logger.info("  Message ID : " + message.getJMSMessageID());
             logger.info("  Correlation ID : " + message.getJMSCorrelationID());
             logger.info("  Timestamp : " + message.getJMSTimestamp());
-            logger.info("  Redlivered : " + message.getJMSRedelivered());
+            logger.info("  Redelivered : " + message.getJMSRedelivered());
             logger.info("  Expiration : " + message.getJMSExpiration());
             logger.info("  Priority : " + message.getJMSPriority());
             logger.info("  Type : " + message.getJMSType());
