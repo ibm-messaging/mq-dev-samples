@@ -2,15 +2,10 @@
 
 ## Overview
 
-Serialization is the process of converting an object into a format that can be stored (string, file, database) or transmitted (network). Deserialization is the reverse: converting that format back into an object.
+Microsoft has removed support for BinaryFormatter, which IBM MQ relied on for the `WriteObject` and `ReadObject` methods used in .NET object serialization and de-serialization. As a result, these methods are deprecated starting with MQ 9.4.4.
+Therefore, Application developers must adopt a new strategy for serializing and de-serializing objects.
 
-`ReadObject` and `WriteObject` are methods in the IBM MQ .NET libraries (both the base IBM.WMQ classes and the higher-level IBM.XMS API) that allow applications to serialize and deserialize .NET objects into MQ message bodies using the .NET `BinaryFormatter`. These methods were originally provided to simplify sending complex objects over MQ by automatically converting them to and from a binary format.
-
-However, Microsoft has removed support for `BinaryFormatter` due to significant security risks, including the potential for remote code execution when deserializing untrusted data. Because these IBM MQ methods depend directly on `BinaryFormatter`, Microsoft’s decision makes it unsafe and impractical for IBM MQ to continue supporting `ReadObject` and `WriteObject`.
-
-As a result and in alignment with Microsoft’s deprecation and removal of binary serialization—IBM MQ is removing these methods starting with the IBM MQ .NET 9.4.4 Continuous Delivery (CD) release. With the complete removal of `BinaryFormatter` in .NET 9 and later, continued support would introduce security issues and break compatibility with future .NET runtimes.
-
-Applications should migrate to explicit, secure serialization techniques such as JSON or XML using `TextMessage` or `BytesMessage`, which provide safer, interoperable, and future-proof alternatives for exchanging structured data across systems.
+The sample demonstrates how to perform .NET object serialization and de-serialization using native .NET capabilities based on XML and JSON formats.
 
 **IBM MQ Documentation : [Deprecated, stabilized and removed features in IBM MQ 9.4.4](https://www.ibm.com/docs/en/ibm-mq/9.4.x?topic=944-deprecated-stabilized-removed-features-in-mq)**
 
