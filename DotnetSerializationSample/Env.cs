@@ -37,13 +37,8 @@ namespace IBM_MQ_dotNet_JSON_XML_serialization_sample_utility
             public int port = 0;
             public string channel = null;
             public string queue_name = null;
-            public string model_queue_name = null;
-            public string topic_name = null;
             public string app_user = null;
             public string app_password = null;
-            public string cipher_suite = null;
-            public string key_repository = null;
-            public bool is_managed = true;
             public void dump()
             {
                 Console.WriteLine("hostname {0} ", host);
@@ -51,12 +46,7 @@ namespace IBM_MQ_dotNet_JSON_XML_serialization_sample_utility
                 Console.WriteLine("qmgr {0} ", qmgr);
                 Console.WriteLine("channel {0} ", channel);
                 Console.WriteLine("queue {0} ", queue_name);
-                Console.WriteLine("topic {0} ", topic_name);
                 Console.WriteLine("app_user {0} ", app_user);
-                Console.WriteLine($"is_managed {is_managed}");
-                // Console.WriteLine("app_password {0} ", app_password);
-                Console.WriteLine("cipherSpec {0} ", cipher_suite);
-                Console.WriteLine("sslKeyRepository{0} ", key_repository);
             }
         }
 
